@@ -27,7 +27,7 @@
           </div>
 
           <!-- 选择资产 -->
-          <div class="symbol" v-if="supportBuyCoin.length != 0" @click="assetsShow = true">
+          <div class="symbol" v-if="supportBuyCoinLoad == false" @click="assetsShow = true">
             <div class="icon-box">
               <img class="icon" :src="availableCoin.projectLogo" />
               <div v-for="(item2, index) in tokensList">
@@ -43,7 +43,7 @@
               :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
               size="20"></van-icon>
           </div>
-          <van-loading v-else color="#C7C7C7" />
+          <van-loading v-if="supportBuyCoinLoad == true" color="#C7C7C7" />
           <!-- 选择资产 -->
         </label>
       </div>
@@ -56,7 +56,7 @@
           <div class="info">
             <input class="num" readonly :value="selectChannel && selectChannel.amount" :placeholder="t('startpay.get')" />
           </div>
-          <div class="moneyInfo" v-if="currency.length != 0">
+          <div class="moneyInfo" v-if="currencyLoad == false">
             <img :src="activeCoin.logo" />
             <span>
               {{
@@ -68,7 +68,7 @@
               :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
               size="20"></van-icon>
           </div>
-          <van-loading v-else color="#C7C7C7" />
+          <van-loading v-if="currencyLoad==true" color="#C7C7C7" />
         </div>
       </div>
       <!-- 法币-->
@@ -161,6 +161,9 @@ const sourceFiatCurrency = ref({})
 
 //新代码
 /**获取URL参数 */
+const supportBuyCoinLoad = ref(true)
+const currencyLoad = ref(true)
+
 const propertyLoad = ref(false)//资产加载
 const supportBuyCoin = ref([])//资产列表
 const currency = ref([])//法币列表
@@ -196,10 +199,13 @@ const getCurrencyList = () => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
       }
+      currencyLoad.value=false
     } else {
       activeCoin.value = { name: 'USD', icon: 'https://ossimg.ullapay.com/5/ac1db2184ef34be4aa5ed72878435bb0.png' }
     }
-
+  }).catch(() => {
+    currencyLoad.value=false
+    currency.value=[]
   })
 }
 
@@ -224,11 +230,14 @@ const getSupportBuyCoin = (val) => {
       symbol: availableCoin.value.symbol
     }
     propertyLoad.value = false
+    supportBuyCoinLoad.value=false
     if (num.value) {
       numChange() //获取渠道列表
     }
   }).catch(() => {
     propertyLoad.value = false
+    supportBuyCoinLoad.value=false
+    supportBuyCoin.value=[]
   })
 }
 //选择资产
@@ -403,26 +412,6 @@ const next = async () => {
   setTimeout(() => (loading.value = false), 5000)
   try {
     const channelInfo = selectChannel.value
-
-    // const { code, data } = await http.post('/order/add', {
-    //   toAddress: '',
-    //   fromAddress: route.query['form'],
-    //   deliverGoods: '0',
-    //   ...route.query,
-    //   net: route.query.net,
-    //   currency: sourceFiatCurrency.value.lable,
-    //   to: route.query.to,
-    //   symbol: route.query.symbol,
-    //   channelIdent: channelInfo.channelIdent,
-    //   businessId: route.query.businessId,
-    //   businessUserId: route.query.businessUserId,
-    //   type: 'sell',
-    //   channelId: channelInfo.channelId,
-    //   tokenAmount: channelInfo.amount,
-    //   conversionPrice: channelInfo.conversionPrice,
-    //   inputValue: num.value,
-    // })
-
     const { code, data } = await http.post('/api/v1/order/create', {
       channelIdent: channelInfo.channelIdent,//渠道标识-渠道唯一的标识
       conversionPrice: channelInfo.conversionPrice,//换算价格，即虚拟币的实时价格-渠道费用计算会返回该值

@@ -18,14 +18,14 @@
                         <van-loading v-else color="#C7C7C7" size="14" />
                     </div>
                 </div>
-                <label class="assets">
+                <label class="assets" >
                     <div class="info" style="flex: 1; display: flex; height: 100%">
                         <input readonly class="num" v-model="num" is="ui-input" inputmode="decimal"
                             :placeholder="t('startpay.sell')" />
                     </div>
 
                     <!-- 选择法币 -->
-                    <div class="moneyInfo" v-if="currency.length != 0" @click="moneyShow = true">
+                    <div class="moneyInfo"  v-if="currencyLoad == false" @click="moneyShow = true">
                         <img :src="activeCoin.logo" />
                         <span>
                             {{
@@ -35,7 +35,7 @@
                         <van-icon class="icon-left"
                             :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'" size="20"></van-icon>
                     </div>
-                    <van-loading v-else color="#C7C7C7" />
+                    <van-loading v-if="currencyLoad == true" color="#C7C7C7" />
                     <!-- 选择法币 -->
                 </label>
             </div>
@@ -49,7 +49,7 @@
                     </div>
 
                     <!-- 选择资产 -->
-                    <div class="symbol" v-if="supportBuyCoin.length != 0" @click="assetsShow = true">
+                    <div class="symbol" v-if="supportBuyCoinLoad == false" @click="assetsShow = true">
                         <div class="icon-box">
                             <img class="icon" :src="availableCoin.projectLogo" />
                             <div v-for="(item2, index) in tokensList">
@@ -64,7 +64,7 @@
                         <van-icon class="icon-right"
                             :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'" size="20"></van-icon>
                     </div>
-                    <van-loading v-else color="#C7C7C7" />
+                    <van-loading v-if="supportBuyCoinLoad == true" color="#C7C7C7" />
                 </div>
                 <!-- 选择资产 -->
             </div>
@@ -150,7 +150,8 @@ const { localeId } = storeToRefs(settingsStore)
 const { t } = useI18n()
 const route = useRoute()
 
-
+const supportBuyCoinLoad = ref(true)
+const currencyLoad = ref(true)
 const keyshow = ref(false)
 const loading = ref(false)
 const fistLoading = ref(false)
@@ -203,11 +204,17 @@ const getCurrencyList = () => {
                 sourceValue: num.value,
                 symbol: availableCoin.value.symbol
             }
+            currencyLoad.value=false
         } else {
+            currency.value=[]
             activeCoin.value = { name: 'USD', icon: 'https://ossimg.ullapay.com/5/ac1db2184ef34be4aa5ed72878435bb0.png' }
+            currencyLoad.value=false
         }
 
-    })
+    }).catch(() => {
+        currencyLoad.value=false
+        currency.value=[]
+  })
 }
 
 //获取资产列表
@@ -229,10 +236,14 @@ const getSupportBuyCoin = (val) => {
             sourceValue: num.value,
             symbol: availableCoin.value.symbol
         }
-        console.log(params.value, 'nihao崔伦競')
+        supportBuyCoinLoad.value=false
         if (num.value) {
             numChange() //获取渠道列表
         }
+    }).catch(() => {
+        supportBuyCoin.value=[]
+        loading.value = false
+        supportBuyCoinLoad.value=false
     })
 }
 //选择资产
