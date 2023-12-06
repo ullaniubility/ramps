@@ -5,7 +5,8 @@
             <div class="back-icon">
                 <!-- <van-icon name="arrow-left" size="26"  @click="onBack()" /> -->
                 <van-icon class="icon-left" v-if="route.query.businessId !== '1'"
-                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20" @click="onBack()"></van-icon>
+                    :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20"
+                    @click="onBack()"></van-icon>
             </div>
             <div class="number">
                 <div class="title">
@@ -18,14 +19,14 @@
                         <van-loading v-else color="#C7C7C7" size="14" />
                     </div>
                 </div>
-                <label class="assets" >
+                <label class="assets">
                     <div class="info" style="flex: 1; display: flex; height: 100%">
                         <input readonly class="num" v-model="num" is="ui-input" inputmode="decimal"
                             :placeholder="t('startpay.sell')" />
                     </div>
 
                     <!-- 选择法币 -->
-                    <div class="moneyInfo"  v-if="currencyLoad == false" @click="moneyShow = true">
+                    <div class="moneyInfo" v-if="currencyLoad == false" @click="moneyShow = true">
                         <img :src="activeCoin.logo" />
                         <span>
                             {{
@@ -33,7 +34,8 @@
                             }}
                         </span>
                         <van-icon class="icon-left"
-                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'" size="20"></van-icon>
+                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
+                            size="20"></van-icon>
                     </div>
                     <van-loading v-if="currencyLoad == true" color="#C7C7C7" />
                     <!-- 选择法币 -->
@@ -54,7 +56,8 @@
                             <img class="icon" :src="availableCoin.projectLogo" />
                             <div v-for="(item2, index) in tokensList">
                                 <img v-if="availableCoin.coinType == 2 && item2.chainCode == availableCoin.net"
-                                :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur'?'icon-min-left': 'icon-min'" :src="item2.iconUrl" />
+                                    :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'icon-min-left' : 'icon-min'"
+                                    :src="item2.iconUrl" />
                             </div>
                         </div>
                         <div class="symbol-text">
@@ -62,7 +65,8 @@
                             <span v-if="availableCoin.coinType == 2" class="sub">{{ availableCoin.net }}</span>
                         </div>
                         <van-icon class="icon-right"
-                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'" size="20"></van-icon>
+                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
+                            size="20"></van-icon>
                     </div>
                     <van-loading v-if="supportBuyCoinLoad == true" color="#C7C7C7" />
                 </div>
@@ -70,16 +74,17 @@
             </div>
 
             <div class="tips" v-if="supportBuyCoin.length != 0">
-                {{ selectChannel?.buyEachTimeMin > num ? t('min', { min: formatDecimal(selectChannel?.buyEachTimeMin, 2) }) : ``
+                {{ selectChannel?.buyEachTimeMin > num ? t('min', { min: formatDecimal(selectChannel?.buyEachTimeMin, 2) })
+                    : ``
                 }}
             </div>
             <div class="tips" v-if="supportBuyCoin.length != 0">
-                {{ selectChannel?.buyEachTimeMax < num ? t('max', { max: formatDecimal(selectChannel?.buyEachTimeMax, 2) }) : ``
-                }} </div>
+                {{ selectChannel?.buyEachTimeMax < num ? t('max', { max: formatDecimal(selectChannel?.buyEachTimeMax, 2) })
+                    : `` }} </div>
                     <!-- 供应商 -->
                     <div class="supplier" @click="() => {
-                            allChannel.length != 0 ? supplierShow = true : ''
-                        }">
+                        allChannel.length != 0 ? supplierShow = true : ''
+                    }">
                         <div v-if="loading == false" style="width: 100%;">
                             <div class="info" v-if="allChannel.length == 0">
                                 <img src="@/assets/img/null.png" alt="">
@@ -91,7 +96,8 @@
                                     <span class="name">{{ selectChannel.channelName }}</span>
                                 </div>
                                 <van-icon class="icon-right"
-                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'" size="20"></van-icon>
+                                    :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
+                                    size="20"></van-icon>
                             </div>
                         </div>
                         <van-loading v-if="loading" color="#C7C7C7" />
@@ -177,16 +183,22 @@ const activeCoin = ref({})//法币
 const params = ref({})//渠道参数
 const allChannel = ref([])//渠道列表
 function getQuery() {
-    urlData.value.inputValue = route.query.defaultAmount || '100'
-    const address = urlData.value.address.split(',')
-    const net = urlData.value.net.split(',')
-    urlData.value.addressList = []
-    address.forEach((element, index) => {
-        console.log(element)
-        urlData.value.addressList.push({ address: element, net: net[index] })
-    });
-    //获取资产
-    getSupportBuyCoin({ addressList: urlData.value.addressList, buyFlag: 1 })
+    if (urlData.value.address && urlData.value.net) {
+        urlData.value.inputValue = route.query.defaultAmount || '100'
+        const address = urlData.value.address.split(',')
+        const net = urlData.value.net.split(',')
+        urlData.value.addressList = []
+        address.forEach((element, index) => {
+            console.log(element)
+            urlData.value.addressList.push({ address: element, net: net[index] })
+        });
+        //获取资产
+        getSupportBuyCoin({ addressList: urlData.value.addressList, buyFlag: 1 })
+    } else {
+        supportBuyCoinLoad.value = false
+        supportBuyCoin.value=[]
+    }
+
 
 }
 //获取法币列表
@@ -204,17 +216,17 @@ const getCurrencyList = () => {
                 sourceValue: num.value,
                 symbol: availableCoin.value.symbol
             }
-            currencyLoad.value=false
+            currencyLoad.value = false
         } else {
-            currency.value=[]
+            currency.value = []
             activeCoin.value = { name: 'USD', icon: 'https://ossimg.ullapay.com/5/ac1db2184ef34be4aa5ed72878435bb0.png' }
-            currencyLoad.value=false
+            currencyLoad.value = false
         }
 
     }).catch(() => {
-        currencyLoad.value=false
-        currency.value=[]
-  })
+        currencyLoad.value = false
+        currency.value = []
+    })
 }
 
 //获取资产列表
@@ -236,14 +248,14 @@ const getSupportBuyCoin = (val) => {
             sourceValue: num.value,
             symbol: availableCoin.value.symbol
         }
-        supportBuyCoinLoad.value=false
+        supportBuyCoinLoad.value = false
         if (num.value) {
             numChange() //获取渠道列表
         }
     }).catch(() => {
-        supportBuyCoin.value=[]
+        supportBuyCoin.value = []
         loading.value = false
-        supportBuyCoinLoad.value=false
+        supportBuyCoinLoad.value = false
     })
 }
 //选择资产
@@ -498,15 +510,16 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 }
 
 .icon-min-left {
-      border: 1px solid #fff;
-      height: 20px;
-      width: 20px;
-      border-radius: 100%;
-      position: absolute;
-      bottom: 0;
-      left: -50%;
-      transform: translateX(50%);
-    }
+    border: 1px solid #fff;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    transform: translateX(50%);
+}
+
 @media (max-height: 615px),
 (max-width: 575px) {
 
@@ -639,8 +652,6 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     --input-number:#1F1F38; //输入框文字默认颜色
     --text-theme-color:#1F1F36; //主题文字
     box-sizing: border-box;
-
-
 }
 
 .tips {
@@ -772,7 +783,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     }
 
     .name {
-        margin:0 12px;
+        margin: 0 12px;
         flex: 1;
         font-size: 18px;
         font-weight: 500;

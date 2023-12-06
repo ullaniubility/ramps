@@ -1,5 +1,5 @@
 <template>
-  <van-config-provider class="gp-view" :theme="settingsStore.theme" :theme-vars="themeVars">
+  <van-config-provider class="gp-view" :class="route.query.isDark === 'dark'?'dark' : ''" :theme="settingsStore.theme" :theme-vars="themeVars">
     <RouterView v-slot="{ Component, route }">
       <keep-alive>
         <component :is="Component" :key="route.fullPath" />
@@ -10,9 +10,11 @@
 <script setup>
 import { ref } from 'vue'
 import '@vant/touch-emulator'
+import { useRoute } from 'vue-router'
 import useSettingStore from '@/stores/modules/setting'
 const settingsStore = useSettingStore()
 const { themeColor, localeId } = storeToRefs(settingsStore)
+const route = useRoute()
 
 const themeVars = ref({
   themeColor
@@ -26,17 +28,23 @@ if (
 ) {
   document.documentElement.setAttribute('dir', 'rtl')
 }
-console.log(localeId.value)
 </script>
 <style lang="scss" scoped>
-@media (min-width: 820px) {
+@media (min-height: 615px),
+(min-width: 575px) {
   .gp-view {
     width: 100vw;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    // background-color: #F6F7F9;
+    background-color: var(--page-bg);
+
+    &.dark {
+      --page-bg: #13131B; //主题
+    }
+
+    --page-bg:#FFFFFF;
   }
 }
 </style>

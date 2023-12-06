@@ -4,7 +4,8 @@
     <main class="main" :class="route.query.isDark === 'dark' ? 'dark' : ''">
       <div class="back-icon">
         <van-icon class="icon-left" v-if="route.query.businessId !== '1'"
-                            :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20" @click="onBack()"></van-icon>
+          :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20"
+          @click="onBack()"></van-icon>
         <!-- <van-icon name="arrow-left" size="26" v-if="route.query.businessId !== '1'" @click="onBack()" /> -->
       </div>
       <!-- 资产 -->
@@ -13,8 +14,8 @@
           {{ t('startpay.sell') }}
           <div class="dalance">
             <van-icon name="card" size="18" color="#7E7E7E" />
-            <span v-if="availableCoin.balance" style="margin:0 10px;color:#7E7E7E ;">{{
-              formatDecimal(availableCoin.balance, 8)
+            <span v-if="supportBuyCoinLoad==false" style="margin:0 10px;color:#7E7E7E ;">{{
+            availableCoin.balance?formatDecimal(availableCoin.balance, 8):0
             }}</span>
             <van-loading v-else color="#C7C7C7" size="14" />
           </div>
@@ -68,7 +69,7 @@
               :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
               size="20"></van-icon>
           </div>
-          <van-loading v-if="currencyLoad==true" color="#C7C7C7" />
+          <van-loading v-if="currencyLoad == true" color="#C7C7C7" />
         </div>
       </div>
       <!-- 法币-->
@@ -173,16 +174,22 @@ const activeCoin = ref({})//法币
 const params = ref({})//渠道参数
 const allChannel = ref([])//渠道列表
 function getQuery() {
-  urlData.value.inputValue = route.query.defaultAmount || '100'
-  const address = urlData.value.address.split(',')
-  const net = urlData.value.net.split(',')
-  urlData.value.addressList = []
-  address.forEach((element, index) => {
-    console.log(element)
-    urlData.value.addressList.push({ address: element, net: net[index] })
-  });
-  //获取资产
-  getSupportBuyCoin({ addressList: urlData.value.addressList, buyFlag: 1 })
+  if (urlData.value.address && urlData.value.net) {
+    urlData.value.inputValue = route.query.defaultAmount || '100'
+    const address = urlData.value.address.split(',')
+    const net = urlData.value.net.split(',')
+    urlData.value.addressList = []
+    address.forEach((element, index) => {
+      console.log(element)
+      urlData.value.addressList.push({ address: element, net: net[index] })
+    });
+    //获取资产
+    getSupportBuyCoin({ addressList: urlData.value.addressList, buyFlag: 0 })
+  } else {
+    supportBuyCoinLoad.value = false
+    supportBuyCoin.value = []
+  }
+
 
 }
 //获取法币列表
@@ -199,13 +206,13 @@ const getCurrencyList = () => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
       }
-      currencyLoad.value=false
+      currencyLoad.value = false
     } else {
       activeCoin.value = { name: 'USD', icon: 'https://ossimg.ullapay.com/5/ac1db2184ef34be4aa5ed72878435bb0.png' }
     }
   }).catch(() => {
-    currencyLoad.value=false
-    currency.value=[]
+    currencyLoad.value = false
+    currency.value = []
   })
 }
 
@@ -230,14 +237,14 @@ const getSupportBuyCoin = (val) => {
       symbol: availableCoin.value.symbol
     }
     propertyLoad.value = false
-    supportBuyCoinLoad.value=false
+    supportBuyCoinLoad.value = false
     if (num.value) {
       numChange() //获取渠道列表
     }
   }).catch(() => {
     propertyLoad.value = false
-    supportBuyCoinLoad.value=false
-    supportBuyCoin.value=[]
+    supportBuyCoinLoad.value = false
+    supportBuyCoin.value = []
   })
 }
 //选择资产
@@ -494,8 +501,9 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 
 .icon-right,
 .icon-left {
-    color: var(--icon-text);
+  color: var(--icon-text);
 }
+
 @media (max-height: 615px),
 (max-width: 575px) {
 

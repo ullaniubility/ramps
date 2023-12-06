@@ -28,29 +28,29 @@ export default ({ mode, command }) => {
       //   }
       // }
     },
-    // build: {
-    //   sourcemap: env.VITE_BUILD_SOURCEMAP == 'true',
-    //   minify: 'terser',
-    //   cssCodeSplit: true,
-    //   // target: 'es2015',
-    //   terserOptions: {
-    //     compress: {
-    //       drop_console: env.VITE_BUILD_DROP_CONSOLE == 'true'
-    //     }
-    //   },
-    //   rollupOptions: {
-    //     output: { //静态资源分类打包
-    //       chunkFileNames: 'static/js/[name]-[hash].js',
-    //       entryFileNames: 'static/js/[name]-[hash].js',
-    //       assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
-    //       manualChunks(id) { //静态资源分拆打包
-    //         if (id.includes('node_modules')) {
-    //           return id.toString().split('node_modules/.pnpm/')[1].split('/')[0].toString();
-    //         }
-    //       }
-    //     }
-    //   }
-    // },
+    build: {
+      sourcemap: env.VITE_BUILD_SOURCEMAP == 'true',
+      minify: 'terser',
+      cssCodeSplit: true,
+      // target: 'es2015',
+      terserOptions: {
+        compress: {
+          drop_console: env.VITE_BUILD_DROP_CONSOLE == 'true'
+        }
+      },
+      rollupOptions: {
+        output: { //静态资源分类打包
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+          manualChunks(id) { //静态资源分拆打包
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/.pnpm/')[1].split('/')[0].toString();
+            }
+          }
+        }
+      }
+    },
     plugins: [
       ...createVitePlugins(env, command === 'build', env.VITE_APP_PRIMITIVE)
     ],
