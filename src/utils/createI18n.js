@@ -9,7 +9,7 @@ import es from '@/locales/es.json';
 import fr from '@/locales/fr.json';
 import ja from '@/locales/ja.json';
 import ko from '@/locales/ko.json';
-import ptPT from '@/locales/pt-Pt.json';
+import pt from '@/locales/pt.json';
 import ru from '@/locales/ru.json';
 import th from '@/locales/th.json';
 import vi from '@/locales/vi.json';
@@ -48,7 +48,7 @@ const resources = {
     //西班牙语
     "es": es,
     //葡萄牙语
-    "pt-PT": ptPT,
+    "pt-PT": pt,
     //印地语
     "hi": hi,
     //越南语
