@@ -2,20 +2,21 @@
   <van-config-provider :theme="themeType">
     <!-- <main class="main" :class="{ ios: isIOS }" :style="'--main-color: #' + (route.query.theme || '2EBC84')"> -->
     <main class="main" :class="route.query.isDark === 'dark' ? 'dark' : ''">
-      <div class="back-icon">
+      <!-- <div class="back-icon">
         <van-icon class="icon-left" v-if="route.query.businessId !== '1'"
           :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20"
           @click="onBack()"></van-icon>
-        <!-- <van-icon name="arrow-left" size="26" v-if="route.query.businessId !== '1'" @click="onBack()" /> -->
-      </div>
+      </div> -->
       <!-- 资产 -->
+      <div style="height: 40vh; display: flex;
+            flex-direction: column;justify-content: space-evenly;">
       <div class="number">
         <div class="title">
           {{ t('startpay.sell') }}
           <div class="dalance">
             <van-icon name="card" size="18" color="#7E7E7E" />
-            <span v-if="supportBuyCoinLoad==false" style="margin:0 10px;color:#7E7E7E ;">{{
-            availableCoin.balance?formatDecimal(availableCoin.balance, 8):0
+            <span v-if="supportBuyCoinLoad == false" style="margin:0 10px;color:#7E7E7E ;">{{
+              availableCoin.balance ? formatDecimal(availableCoin.balance, 8) : 0
             }}</span>
             <van-loading v-else color="#C7C7C7" size="14" />
           </div>
@@ -28,7 +29,11 @@
           </div>
 
           <!-- 选择资产 -->
-          <div class="symbol" v-if="supportBuyCoinLoad == false" @click="assetsShow = true">
+          <div class="symbol" v-if="supportBuyCoinLoad == false" @click="() => {
+            if (urlData.address != undefined && urlData.net != undefined) {
+              assetsShow = true
+            }
+          }">
             <div class="icon-box">
               <img class="icon" :src="availableCoin.projectLogo" />
               <div v-for="(item2, index) in tokensList">
@@ -51,7 +56,11 @@
       <!-- 资产 -->
       <div class="tips" v-if="availableCoin.balance">{{ num > Number(availableCoin.balance) ? t('balance') : '' }}</div>
       <!-- 法币-->
-      <div class="number" @click="moneyShow = true">
+      <div class="number" @click="() => {
+        if (urlData.address != undefined && urlData.net != undefined) {
+          moneyShow = true
+        }
+      }">
         <div class="title">{{ t('startpay.get') }}</div>
         <div class="assets">
           <div class="info">
@@ -73,7 +82,7 @@
         </div>
       </div>
       <!-- 法币-->
-
+    </div>
       <!-- 供应商 -->
       <div class="supplier" @click="() => {
         allChannel.length != 0 ? supplierShow = true : ''
@@ -139,6 +148,8 @@ import Supplier from '@/views/home/popups/supplier.vue'
 import { computed } from 'vue'
 import { showToast } from 'vant';
 import useSettingStore from '@/stores/modules/setting'
+import USD from '@/assets/img/USD.png'
+import USDT from '@/assets/img/USDT.png'
 
 const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
@@ -164,12 +175,11 @@ const sourceFiatCurrency = ref({})
 /**获取URL参数 */
 const supportBuyCoinLoad = ref(true)
 const currencyLoad = ref(true)
-
-const propertyLoad = ref(false)//资产加载
+const disabled = ref(true)
 const supportBuyCoin = ref([])//资产列表
 const currency = ref([])//法币列表
 const urlData = ref({})
-const availableCoin = ref({ symbol: 'USDC', net: 'ETH', projectLogo: 'https://ossimg.ullapay.com/5/2f4570aa363645799223317831b688b4.png', coinType: 2 })//资产
+const availableCoin = ref({})//资产
 const activeCoin = ref({})//法币
 const params = ref({})//渠道参数
 const allChannel = ref([])//渠道列表
@@ -186,8 +196,11 @@ function getQuery() {
     //获取资产
     getSupportBuyCoin({ addressList: urlData.value.addressList, buyFlag: 0 })
   } else {
+    disabled.value = true
     supportBuyCoinLoad.value = false
     supportBuyCoin.value = []
+    activeCoin.value= {symbol:urlData.value.symbol,logo:USD}
+    availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
   }
 
 
@@ -195,7 +208,7 @@ function getQuery() {
 //获取法币列表
 const getCurrencyList = () => {
   getCurrency().then(res => {
-    if (res.code) {
+    if (res.code == 200) {
       currency.value = res.data
       activeCoin.value = currency.value[0]
       params.value = {
@@ -208,43 +221,57 @@ const getCurrencyList = () => {
       }
       currencyLoad.value = false
     } else {
-      activeCoin.value = { name: 'USD', icon: 'https://ossimg.ullapay.com/5/ac1db2184ef34be4aa5ed72878435bb0.png' }
+      disabled.value = true
+      currency.value = []
+      activeCoin.value = { symbol: 'USD', logo: USD, }
+      currencyLoad.value = false
     }
   }).catch(() => {
+    disabled.value = true
     currencyLoad.value = false
     currency.value = []
+    activeCoin.value = { symbol: 'USD', logo: USD, }
   })
 }
 
 //获取资产列表
 const getSupportBuyCoin = (val) => {
   console.log(val, '传参数')
-  propertyLoad.value = true
   getAssetList(val).then(res => {
-    const data = res.data
-    data.forEach((item) => {
-      if (item.balance != 0) {
-        supportBuyCoin.value.push(item)
+    if (res.code == 200) {
+      const data = res.data
+      data.forEach((item) => {
+        if (item.balance != 0) {
+          supportBuyCoin.value.push(item)
+        }
+      })
+      availableCoin.value = supportBuyCoin.value[0]
+      params.value = {
+        address: availableCoin.value.walletAddress,//地址
+        fiat2Token: false,//买true 卖false
+        net: availableCoin.value.net,
+        sourceFiatCurrency: activeCoin.value.symbol,//法币选择
+        sourceValue: num.value,
+        symbol: availableCoin.value.symbol
       }
-    })
-    availableCoin.value = supportBuyCoin.value[0]
-    params.value = {
-      address: availableCoin.value.walletAddress,//地址
-      fiat2Token: false,//买true 卖false
-      net: availableCoin.value.net,
-      sourceFiatCurrency: activeCoin.value.symbol,//法币选择
-      sourceValue: num.value,
-      symbol: availableCoin.value.symbol
+      supportBuyCoinLoad.value = false
+      if (num.value) {
+        numChange() //获取渠道列表
+      }
+    } else {
+      disabled.value = true
+      supportBuyCoin.value = []
+      loading.value = false
+      supportBuyCoinLoad.value = false
+      availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
     }
-    propertyLoad.value = false
-    supportBuyCoinLoad.value = false
-    if (num.value) {
-      numChange() //获取渠道列表
-    }
+
   }).catch(() => {
-    propertyLoad.value = false
-    supportBuyCoinLoad.value = false
+    disabled.value = true
+    availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
     supportBuyCoin.value = []
+    loading.value = false
+    supportBuyCoinLoad.value = false
   })
 }
 //选择资产
@@ -338,9 +365,9 @@ const onKsysChange = (key) => {
 }
 
 onMounted(() => {
-  if (num.value) {
-    numChange()
-  }
+  // if (num.value) {
+  //   numChange()
+  // }
   document.body.style.overflow = 'initial'
   // sourceFiatCurrency.value = downList.value[0]
 })
@@ -350,14 +377,14 @@ onUnmounted(() => {
   document.body.style.overflow = ''
 })
 
-const disabled = computed(() => {
-  if (allChannel.value.length != 0) {
-    return false
-  } else if (allChannel.value.length == 0) {
-    return true
-  }
-  return !num.value || loading.value
-})
+// const disabled = computed(() => {
+//   if (allChannel.value.length != 0) {
+//     return false
+//   } else if (allChannel.value.length == 0) {
+//     return true
+//   }
+//   return !num.value || loading.value
+// })
 
 
 
@@ -381,14 +408,20 @@ const onGetInfo = async () => {
         onGetInfoCancel = c
       }),
     })
-    if (code == 200 && data) {
+    if (code == 200) {
       selectChannel.value = data[0]
       allChannel.value = data
-      if (data.length == 0) {
+      if (data.length != 0) {
+        disabled.value=false
+      }else if (data.length == 0){
         showToast(t('null'))
+        disabled.value=true
       }
+    }else {
+      disabled.value=true
     }
   } catch (error) {
+    disabled.value=true
     console.log(error)
   }
   loading.value = false
@@ -450,12 +483,61 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 </script>
 
 <style lang="scss">
-@media (min-height: 615px),
-(min-width: 575px) {
+@media (max-width: 575px) 
+{
+
+    body {
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .van-overlay {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100% !important;
+        height: 100%;
+    }
+
+    :deep(.van-overlay) {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100% !important;
+        height: 100%;
+    }
+
+    :deep(.van-popup--bottom) {
+        width: 375px;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+    }
+
+    .main {
+        position: relative;
+        margin: auto;
+        width: 100%;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .1);
+    }
+
+    .MoneyBox {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+
+    }
+}
+
+@media (min-width: 575px) ,(min-height: 615px){
 
   body {
     box-sizing: border-box;
     padding: 0;
+    width: 100%;
   }
 
   .van-overlay {
@@ -483,11 +565,13 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     bottom: 0;
     transform: translateX(-50%);
   }
-
+  :deep(.next-button){
+        width: 400px;
+    }
   .main {
     position: relative;
     margin: auto;
-    width: 375px;
+    width: 100%;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .1);
   }
 
@@ -504,8 +588,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   color: var(--icon-text);
 }
 
-@media (max-height: 615px),
-(max-width: 575px) {
+@media  (max-width: 575px),(max-height: 615px) {
 
   body {
     box-sizing: border-box;
@@ -542,6 +625,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 
   }
 }
+
 
 
 
@@ -628,7 +712,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 
   --tips-text:#D33D4F;
   --btn-color:#58586A;
-  --bth-bg:#4b654d;
+  --bth-bg:#00B811;
   --bth-bg-disabled: #E8E8ED;
   --btn-border:#E6E8EA;
   --input-number-no:#737386;
@@ -850,4 +934,5 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 .number-keyboard {
   position: static;
   margin-top: 20px;
-}</style>
+}
+</style>

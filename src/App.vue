@@ -28,10 +28,14 @@ if (
 ) {
   document.documentElement.setAttribute('dir', 'rtl')
 }
+onMounted(()=>{
+  console.log(window.WEB_EMBED_WOWEARN_APP_SETTINGS,'windowwindowwindowwindowwindowwindowwindowwindowwindow')
+})
 </script>
 <style lang="scss" scoped>
-@media (min-height: 615px),
-(min-width: 575px) {
+
+@media
+(min-width: 820px) {
   .gp-view {
     width: 100vw;
     min-height: 100vh;
@@ -47,4 +51,21 @@ if (
     --page-bg:#FFFFFF;
   }
 }
+// @media
+// (max-width: 400px) {
+//   .gp-view {
+//     width: 100%;
+//     min-height: 100vh;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     background-color: var(--page-bg);
+
+//     &.dark {
+//       --page-bg: #13131B; //主题
+//     }
+
+//     --page-bg:#FFFFFF;
+//   }
+// }
 </style>

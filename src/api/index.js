@@ -1,17 +1,20 @@
 import axios from 'axios'
 import { showToast, showLoadingToast, closeToast } from 'vant';
-
 import 'vant/es/toast/style';
-import route from '@/router'
-
+import route from '@/router';
+import { useRoute } from 'vue-router'
+import useSettingStore from '@/stores/modules/setting'
 import i18n from '@/utils/createI18n'
 const t = i18n.global.t
+const routes = useRoute()
+const settingsStore = useSettingStore()
+const { token } = storeToRefs(settingsStore)
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASEURL
 axios.defaults.timeout = 20 * 1000
 
 axios.defaults.headers['Version'] = '1.0.0'
-axios.defaults.headers['Authorization']='eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOm51bGwsInVpZCI6IjExNjg2MjM5NTYwNTI1NTM3MjgiLCJleHAiOjE3MDE4NjUyMTgsImlhdCI6MTcwMTI2MDQxOH0.JGSQa3a60NATVCCahsLzM6G5hSRz2t3epLKcgjcmKqhwhEWeKtNwXydnLgnWOtgmw2BL-nhLcUnu9RqvVcm_3A'
+axios.defaults.headers['Authorization']=routes?.query?.Authorization||token.value;
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 请求拦截
@@ -42,7 +45,7 @@ axios.interceptors.response.use(
       return
     }
     if (data?.code !== 200) {
-      showToast(data.msg || t('msg.' + data.code));
+      showToast( t('msg.' + data.code)||data.msg);
     }
     return Promise.resolve(data)
   },

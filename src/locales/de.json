@@ -19,6 +19,8 @@
     "msg.902": "Parametervalidierung fehlgeschlagen",
     "msg.903": "Anfrage wurde abgebrochen",
     "msg.904": "Sie sind zurzeit nicht autorisiert",
+    "msg.401": "Die Anmeldung ist abgelaufen",
+
     "next": "nächster Schritt",
     "bestRate": "Optimaler Wechselkurs",
     "completed": "Abgeschlossen",

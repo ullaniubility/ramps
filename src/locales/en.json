@@ -19,6 +19,8 @@
     "msg.902": "Parameter validation failed",
     "msg.903": "request was aborted",
     "msg.904": "You are currently not authorized to access",
+    "msg.401": "Login has expired",
+
     "next": "next step",
     "bestRate": "Optimal exchange rate",
     "completed": "Completed",

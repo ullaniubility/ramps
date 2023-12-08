@@ -19,6 +19,8 @@
     "msg.902": "Ověření parametrů se nezdařilo",
     "msg.903": "Požadavek se nezdařil",
     "msg.904": "Momentálně nemáte oprávnění k přístupu",
+    "msg.401": "Platnost přihlášení vypršela",
+
     "next": "Další krok",
     "bestRate": "nejlepší cena",
     "completed": "completed",

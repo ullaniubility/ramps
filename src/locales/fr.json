@@ -19,6 +19,8 @@
     "msg.902": "La vérification des paramètres ne passe pas",
     "msg.903": "La demande a échoué",
     "msg.904": "Vous n'avez actuellement pas accès",
+    "msg.401": "La connexion a expiré",
+
     "next": "Prochaines étapes",
     "bestRate": "Les meilleurs taux de change",
     "completed": "Terminé",

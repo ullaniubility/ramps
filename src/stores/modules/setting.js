@@ -10,6 +10,7 @@ const useSettingStore = defineStore(
       themeColorVal: urlParams.theme ? `${urlParams.theme}` : '2EBC84',
       themeColor: urlParams.theme ? `#${urlParams.theme}` : '#2EBC84',
       localeId: urlParams.language || 'zh-Hans',
+      token:urlParams.Authorization || ''
     }),
     getters: {
     },

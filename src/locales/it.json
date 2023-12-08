@@ -19,6 +19,8 @@
     "msg.902": "Verifica dei parametri fallita",
     "msg.903": "Richiesta fallita",
     "msg.904": "Al momento non hai il permesso di accedere",
+    "msg.401": "L'accesso è scaduto",
+
     "next": "Passo successivo",
     "bestRate": "miglior tasso di cambio",
     "completed": "completato",

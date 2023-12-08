@@ -19,6 +19,8 @@
     "msg.902": "Verifikasi parameter gagal",
     "msg.903": "Permintaan gagal",
     "msg.904": "Saat ini Anda tidak memiliki izin untuk mengakses",
+    "msg.401": "Masa masuk telah habis",
+
     "next": "Langkah berikutnya",
     "bestRate": "nilai tukar terbaik",
     "completed": "lengkap",
