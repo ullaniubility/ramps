@@ -106,19 +106,19 @@
       <!-- 供应商 -->
 
       <!-- 货币 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 90vh; border-radius: 10px 10px 0 0"
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh; "
         v-model:show="moneyShow">
         <Money class="popup" v-model:isDark="route.query.isDark" @back="moneyShow = false" :tokenList="currency"
           @confirm="changeMoney" />
       </van-popup>
       <!-- 资产 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 90vh;border-radius: 10px 10px 0 0;"
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
         v-model:show="assetsShow">
         <Assets v-model:isDark="route.query.isDark" @back="assetsShow = false" :tokenList="supportBuyCoin"
           @confirm="changeAssets" />
       </van-popup>
       <!-- 供应商 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 90vh; border-radius: 10px 10px 0 0"
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
         v-model:show="supplierShow">
         <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false" :tokenList="allChannel"
           @confirm="changeSupplier" />
@@ -349,9 +349,9 @@ onMounted(() => {
 // 键盘事件
 const onKsysChange = (key) => {
   const val = num.value
-  if (!num.value) {
-    return
-  }
+  // if (!num.value) {
+  //   return
+  // }
 
   if (key !== 'del') {
     // 输入
@@ -571,7 +571,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   .MoneyBox {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
 
   }
 }
@@ -625,7 +625,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   .MoneyBox {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
 
   }
 }
@@ -669,7 +669,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   .MoneyBox {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
 
   }
 }

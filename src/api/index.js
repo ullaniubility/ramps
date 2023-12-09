@@ -36,7 +36,7 @@ axios.interceptors.request.use(
 
 // 响应拦截
 axios.interceptors.response.use(
-  ({ data }) => {
+  ({ data ,config}) => {
     // closeToast();
     if (data?.code === 904) {
       route.replace({
@@ -44,8 +44,13 @@ axios.interceptors.response.use(
       })
       return
     }
+    console.log(config)
     if (data?.code !== 200) {
-      showToast( t('msg.' + data.code) ||data.msg  );
+      if(data?.code==400&&config.url=="/api/v1/payChannel/allChannelEstimateFee"){
+        showToast( data.msg )
+      }else{
+        showToast( t('msg.' + data.code) ||data.msg);
+      }
     }
     return Promise.resolve(data)
   },
