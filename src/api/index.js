@@ -45,7 +45,7 @@ axios.interceptors.response.use(
       return
     }
     if (data?.code !== 200) {
-      showToast( t('msg.' + data.code)||data.msg);
+      showToast( t('msg.' + data.code) ||data.msg  );
     }
     return Promise.resolve(data)
   },

@@ -20,6 +20,8 @@
     "msg.903": "Anfrage wurde abgebrochen",
     "msg.904": "Sie sind zurzeit nicht autorisiert",
     "msg.401": "Die Anmeldung ist abgelaufen",
+    "msg.100": "Netzwerkanomalie, bitte beenden Sie den Vorgang und versuchen Sie es erneut",
+
 
     "next": "nächster Schritt",
     "bestRate": "Optimaler Wechselkurs",

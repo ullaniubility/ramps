@@ -20,6 +20,8 @@
     "msg.903": "o pedido foi abortado",
     "msg.904": "Você não está autorizado a acessar",
     "msg.401": "O login expirou",
+    "msg.100": "Anormalidade na rede, saia e tente novamente",
+
     "next": "próximo passo",
     "bestRate": "Taxa de câmbio ideal",
     "completed": "Concluído",

@@ -20,6 +20,8 @@
     "msg.903": "La demande a échoué",
     "msg.904": "Vous n'avez actuellement pas accès",
     "msg.401": "La connexion a expiré",
+    "msg.100": "Anomalie du réseau, veuillez quitter et réessayer",
+
 
     "next": "Prochaines étapes",
     "bestRate": "Les meilleurs taux de change",

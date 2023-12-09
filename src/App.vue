@@ -28,9 +28,6 @@ if (
 ) {
   document.documentElement.setAttribute('dir', 'rtl')
 }
-onMounted(()=>{
-  console.log(window.WEB_EMBED_WOWEARN_APP_SETTINGS,'windowwindowwindowwindowwindowwindowwindowwindowwindow')
-})
 </script>
 <style lang="scss" scoped>
 
@@ -45,7 +42,7 @@ onMounted(()=>{
     background-color: var(--page-bg);
 
     &.dark {
-      --page-bg: #13131B; //主题
+      --page-bg: #191924; //主题
     }
 
     --page-bg:#FFFFFF;
