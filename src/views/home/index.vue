@@ -117,20 +117,17 @@
                 <!-- 供应商 -->
 
                 <!-- 货币 -->
-                <van-popup position="bottom" class="MoneyBox" style="height:100vh;"
-                    v-model:show="moneyShow">
+                <van-popup position="bottom" class="MoneyBox" style="height:100vh;" v-model:show="moneyShow">
                     <Money class="popup" v-model:isDark="route.query.isDark" @back="moneyShow = false" :tokenList="currency"
                         @confirm="changeMoney" />
                 </van-popup>
                 <!-- 资产 -->
-                <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
-                    v-model:show="assetsShow">
+                <van-popup position="bottom" class="MoneyBox" style="height: 100vh;" v-model:show="assetsShow">
                     <Assets v-model:isDark="route.query.isDark" @back="assetsShow = false" :tokenList="supportBuyCoin"
                         @confirm="changeAssets" />
                 </van-popup>
                 <!-- 供应商 -->
-                <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
-                    v-model:show="supplierShow">
+                <van-popup position="bottom" class="MoneyBox" style="height: 100vh;" v-model:show="supplierShow">
                     <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false"
                         :tokenList="allChannel" @confirm="changeSupplier" />
                 </van-popup>
@@ -139,9 +136,12 @@
 
                     <template #footer>
                         <van-button :loading="loading" :disabled="disabled" :class="['next-button', disabled && 'disabled']"
-                            @click="next">{{
+                            @click="next">
+                            {{
                                 t('next')
-                            }}</van-button>
+                            }}
+                            <!-- <a :href="jumpLink"></a> -->
+                        </van-button>
                     </template>
                 </number-keyboard>
         </main>
@@ -169,6 +169,7 @@ const { localeId } = storeToRefs(settingsStore)
 const { t } = useI18n()
 const route = useRoute()
 const window2 = window
+const jumpLink = ref()
 
 const supportBuyCoinLoad = ref(true)
 const currencyLoad = ref(true)
@@ -325,12 +326,12 @@ const changeAssets = item => {
         symbol: availableCoin.value.symbol
     }
     loading.value = true
-    if (num.value&& currency.value.length != 0 && supportBuyCoin.value.length != 0) {
-      numChange() //获取渠道列表
-    }else {
-      showToast(t('null'))
-      loading.value = false
-  }
+    if (num.value && currency.value.length != 0 && supportBuyCoin.value.length != 0) {
+        numChange() //获取渠道列表
+    } else {
+        showToast(t('null'))
+        loading.value = false
+    }
 }
 
 //选择法币
@@ -525,7 +526,11 @@ const next = async () => {
         })
 
         if (code == 200) {
-            window.location.href = data.url
+            // jumpLink.value = data.url
+            window.open(data.url)
+            // window.location.href = data.url
+
+            console.log(data)
         }
     } catch (error) {
         console.log(error)
@@ -552,12 +557,15 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
         width: 100% !important;
         height: 100vh;
     }
-    .container{
+
+    .container {
         height: 100vh;
     }
-    :deep(.container){
+
+    :deep(.container) {
         height: 100vh;
     }
+
     :deep(.van-overlay) {
         position: absolute;
         top: 0;
@@ -607,12 +615,15 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
         width: 100% !important;
         height: 100vh;
     }
-  .container{
+
+    .container {
         height: 100vh;
     }
-    :deep(.container){
+
+    :deep(.container) {
         height: 100vh;
     }
+
     :deep(.van-overlay) {
         position: absolute;
         top: 0;

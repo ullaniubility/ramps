@@ -516,7 +516,8 @@ const next = async () => {
       type: "sell"//	购买类型:buy买 sell卖
     })
     if (code == 200) {
-      window.location.href = data.url
+      window.open(data.url)
+      // window.location.href = data.url
     }
   } catch (error) {
     console.log(error)
