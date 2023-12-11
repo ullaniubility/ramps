@@ -528,6 +528,13 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 </script>
 
 <style lang="scss">
+
+.box2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 @media (max-width: 575px) {
 
   body {

@@ -21,7 +21,7 @@
     "msg.904": "Sie sind zurzeit nicht autorisiert",
     "msg.401": "Die Anmeldung ist abgelaufen",
     "msg.100": "Netzwerkanomalie, bitte beenden Sie den Vorgang und versuchen Sie es erneut",
-
+    "msg.31001":"Momentan kann keine Ordnung hergestellt werden",
 
     "next": "nächster Schritt",
     "bestRate": "Optimaler Wechselkurs",

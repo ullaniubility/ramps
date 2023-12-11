@@ -21,7 +21,7 @@
     "msg.904": "Al momento non hai il permesso di accedere",
     "msg.401": "L'accesso è scaduto",
     "msg.100": "Anomalia di rete, esci e riprova",
-
+    "msg.31001":"Impossibile creare l'ordine al momento",
 
     "next": "Passo successivo",
     "bestRate": "miglior tasso di cambio",

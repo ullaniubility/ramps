@@ -21,7 +21,7 @@
     "msg.904": "You are currently not authorized to access",
     "msg.401": "Login has expired",
     "msg.100": "Network abnormality, please exit and try again",
-
+    "msg.31001":"Unable to create order at the moment",
 
     "next": "next step",
     "bestRate": "Optimal exchange rate",
