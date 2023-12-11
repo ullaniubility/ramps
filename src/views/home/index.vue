@@ -131,16 +131,14 @@
                     <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false"
                         :tokenList="allChannel" @confirm="changeSupplier" />
                 </van-popup>
-
+                <!-- <van-button @click="btn">点击跳转</van-button> -->
                 <number-keyboard v-model:isDark="route.query.isDark" @onKsysChange="onKsysChange">
-
                     <template #footer>
                         <van-button :loading="loading" :disabled="disabled" :class="['next-button', disabled && 'disabled']"
                             @click="next">
                             {{
                                 t('next')
                             }}
-                            <!-- <a :href="jumpLink"></a> -->
                         </van-button>
                     </template>
                 </number-keyboard>
@@ -197,6 +195,13 @@ const availableCoin = ref({})//资产
 const activeCoin = ref({})//法币
 const params = ref({})//渠道参数
 const allChannel = ref([])//渠道列表
+
+// function btn() {
+//     // jumpLink.value = data.url
+//     window.open('https://www.baidu.com/')
+//     window.location.href = 'https://www.baidu.com/'
+//     showToast('https://www.baidu.com/')
+// }
 function getQuery() {
     if (urlData.value.address && urlData.value.net) {
         console.log('有地址')
@@ -526,10 +531,9 @@ const next = async () => {
         })
 
         if (code == 200) {
-            // jumpLink.value = data.url
-            window.open(data.url)
             // window.location.href = data.url
-
+            window.open(data.url)
+            window.location.href = data.url
             console.log(data)
         }
     } catch (error) {

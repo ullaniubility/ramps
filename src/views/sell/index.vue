@@ -106,20 +106,17 @@
       <!-- 供应商 -->
 
       <!-- 货币 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 100vh; "
-        v-model:show="moneyShow">
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh; " v-model:show="moneyShow">
         <Money class="popup" v-model:isDark="route.query.isDark" @back="moneyShow = false" :tokenList="currency"
           @confirm="changeMoney" />
       </van-popup>
       <!-- 资产 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
-        v-model:show="assetsShow">
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;" v-model:show="assetsShow">
         <Assets v-model:isDark="route.query.isDark" @back="assetsShow = false" :tokenList="supportBuyCoin"
           @confirm="changeAssets" />
       </van-popup>
       <!-- 供应商 -->
-      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;"
-        v-model:show="supplierShow">
+      <van-popup position="bottom" class="MoneyBox" style="height: 100vh;" v-model:show="supplierShow">
         <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false" :tokenList="allChannel"
           @confirm="changeSupplier" />
       </van-popup>
@@ -516,7 +513,9 @@ const next = async () => {
       type: "sell"//	购买类型:buy买 sell卖
     })
     if (code == 200) {
+      // window.open(data.url)
       window.open(data.url)
+      window.location.href = data.url
       // window.location.href = data.url
     }
   } catch (error) {
