@@ -22,6 +22,7 @@
     "msg.401": "Login has expired",
     "msg.100": "Network abnormality, please exit and try again",
     "msg.31001":"Unable to create order at the moment",
+    "msg.400": "The server is busy,Please try again later",
 
     "next": "next step",
     "bestRate": "Optimal exchange rate",

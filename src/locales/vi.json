@@ -22,6 +22,7 @@
     "msg.401": "Đăng nhập đã hết hạn",
     "msg.100": "Mạng bất thường, vui lòng thoát và thử lại",
     "msg.31001":"Không thể tạo đơn hàng vào lúc này",
+    "msg.400": "Máy chủ đang bận. Vui lòng thử lại sau",
 
     "next": "Tiếp theo",
     "bestRate": "Tỷ giá hối đoái tốt nhất",

@@ -22,6 +22,7 @@
     "msg.401": "O login expirou",
     "msg.100": "Anormalidade na rede, saia e tente novamente",
     "msg.31001":"На данный момент невозможно создать заказ",
+    "msg.400": "O servidor está ocupado. Tente mais tarde",
 
     "next": "próximo passo",
     "bestRate": "Taxa de câmbio ideal",

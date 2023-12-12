@@ -22,6 +22,7 @@
     "msg.401": "Die Anmeldung ist abgelaufen",
     "msg.100": "Netzwerkanomalie, bitte beenden Sie den Vorgang und versuchen Sie es erneut",
     "msg.31001":"Momentan kann keine Ordnung hergestellt werden",
+    "msg.400":"Der Server ist beschäftigt, Bitte versuchen Sie es später noch einmal",
 
     "next": "nächster Schritt",
     "bestRate": "Optimaler Wechselkurs",

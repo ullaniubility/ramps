@@ -22,6 +22,7 @@
     "msg.401": "El inicio de sesión ha caducado",
     "msg.100": "Anomalía en la red, salga e intente nuevamente",
     "msg.31001":"No se puede crear el pedido en este momento.",
+    "msg.400":"El servidor está ocupado. Inténtelo más tarde.",
 
     "next": "Siguiente paso",
     "bestRate": "Tipo de cambio óptimo",

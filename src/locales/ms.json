@@ -22,6 +22,7 @@
      "msg.401": "Log masuk telah tamat tempoh",
      "msg.100": "Keabnormalan rangkaian, sila keluar dan cuba lagi",
      "msg.31001":"Tidak dapat membuat pesanan pada masa ini",
+     "msg.400": "Pelayan sedang sibuk. Sila cuba kemudian",
 
     "next": "Langkah seterusnya",
      "bestRate": "kadar terbaik",

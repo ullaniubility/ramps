@@ -22,6 +22,7 @@
     "msg.401": "La connexion a expiré",
     "msg.100": "Anomalie du réseau, veuillez quitter et réessayer",
     "msg.31001":"Impossible de créer la commande pour le moment",
+    "msg.400":"Le serveur est occupé. Veuillez réessayer plus tard",
 
     "next": "Prochaines étapes",
     "bestRate": "Les meilleurs taux de change",

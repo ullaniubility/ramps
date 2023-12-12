@@ -22,6 +22,7 @@
     "msg.401": "Masa masuk telah habis",
     "msg.100": "Jaringan tidak normal, silakan keluar dan coba lagi",
     "msg.31001":"Tidak dapat membuat pesanan saat ini",
+    "msg.400": "Server sedang sibuk. Silakan coba lagi nanti",
 
     "next": "Langkah berikutnya",
     "bestRate": "nilai tukar terbaik",

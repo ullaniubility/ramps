@@ -22,7 +22,7 @@
     "msg.401": "Platnost přihlášení vypršela",
     "msg.100": "Síťová abnormalita, ukončete ji a zkuste to znovu",
     "msg.31001":"Momentálně nelze vytvořit objednávku",
-
+    "msg.400": "Server je zaneprázdněn, Prosím zkuste to znovu později",
 
     "next": "Další krok",
     "bestRate": "nejlepší cena",

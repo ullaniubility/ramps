@@ -22,6 +22,7 @@
     "msg.401": "L'accesso è scaduto",
     "msg.100": "Anomalia di rete, esci e riprova",
     "msg.31001":"Impossibile creare l'ordine al momento",
+    "msg.400": "Il server è occupato. Riprova più tardi",
 
     "next": "Passo successivo",
     "bestRate": "miglior tasso di cambio",

@@ -218,7 +218,7 @@ const getCurrencyList = () => {
         activeCoin.value = currency.value[0]
         params.value = {
           address: availableCoin.value.walletAddress,//地址
-          fiat2Token: true,//买true 卖false
+          fiat2Token: false,//买true 卖false
           net: availableCoin.value.net,
           sourceFiatCurrency: activeCoin.value.symbol,//法币选择
           sourceValue: num.value,
@@ -264,7 +264,7 @@ const getSupportBuyCoin = (val) => {
         console.log('默认资产', availableCoin.value)
         params.value = {
           address: availableCoin.value.walletAddress,//地址
-          fiat2Token: true,//买true 卖false
+          fiat2Token: false,//买true 卖false
           net: availableCoin.value.net,
           sourceFiatCurrency: activeCoin.value.symbol,//法币选择
           sourceValue: num.value,
@@ -391,7 +391,7 @@ const onKsysChange = (key) => {
   }
   params.value = {
     address: availableCoin.value.walletAddress,//地址
-    fiat2Token: true,//买true 卖false
+    fiat2Token: false,//买true 卖false
     net: availableCoin.value.net,
     sourceFiatCurrency: activeCoin.value.symbol,//法币选择
     sourceValue: num.value,
