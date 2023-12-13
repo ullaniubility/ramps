@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 阻止在 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1, minimal-ui">
   <link rel="stylesheet" href="https://lib.baomitu.com/normalize/4.2.0/normalize.min.css" />
   <title>
     <%= title %>
@@ -70,6 +72,11 @@
       passive: false
     });
 
+    document.documentElement.addEventListener('focus', function (event) {
+        event.preventDefault();
+    }, {
+      passive: false
+    });
     // 禁用双击放大
     var lastTouchEnd = 0;
     document.documentElement.addEventListener('touchend', function (event) {
