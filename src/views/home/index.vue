@@ -7,7 +7,7 @@
                     :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow' : 'arrow-left'" size="20"
                     @click="onBack()"></van-icon>
             </div> -->
-            <div style="height: 40vh; display: flex;
+            <div style="height: 35vh; display: flex;
             flex-direction: column;justify-content: space-evenly;">
                 <div class="number">
                     <div class="title">
@@ -811,12 +811,12 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 .main {
     position: relative;
     padding: 24px 18px;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
     background-color: var(--page-bg);
+    box-sizing: border-box;
 
     &.dark {
         --page-bg: #13131B; //主题

@@ -8,7 +8,7 @@
           @click="onBack()"></van-icon>
       </div> -->
       <!-- 资产 -->
-      <div style="height: 40vh; display: flex;
+      <div style="height: 35vh; display: flex;
             flex-direction: column;justify-content: space-evenly;">
         <div class="number">
           <div class="title">
@@ -822,6 +822,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   justify-content: space-between;
   min-height: 100vh;
   background-color: var(--page-bg);
+  box-sizing: border-box !important;
 
   &.dark {
     --page-bg: #13131B; //主题
