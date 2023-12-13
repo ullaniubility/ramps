@@ -557,8 +557,6 @@ const next = async () => {
     return
   }
   loading.value = true
-
-  setTimeout(() => (loading.value = false), 5000)
   try {
     const channelInfo = selectChannel.value
     const { code, data } = await http.post('/api/v1/order/create', {
@@ -581,11 +579,12 @@ const next = async () => {
     })
     if (code == 200) {
       // window.open(data.url)
-      window.open(data.url)
       window.location.href = data.url
+      setTimeout(() => (loading.value = false), 6000)
       // window.location.href = data.url
     }
   } catch (error) {
+    setTimeout(() => (loading.value = false), 6000)
     console.log(error)
   }
 }

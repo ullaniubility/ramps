@@ -134,8 +134,8 @@
                 <!-- <van-button @click="btn">点击跳转</van-button> -->
                 <number-keyboard v-model:isDark="route.query.isDark" @onKsysChange="onKsysChange">
                     <template #footer>
-                        <van-button :loading="loading" :disabled="disabled" :class="['next-button', disabled && 'disabled']"
-                            @click="next">
+                        <van-button :loading="loading" :disabled="disabled"
+                            :class="['next-button', disabled && 'disabled']" @click="next">
                             {{
                                 t('next')
                             }}
@@ -183,7 +183,7 @@ const supplierShow = ref(false)
 const moneyShow = ref(false)
 const assetsShow = ref(false)
 const num = ref(route.query.defaultAmount || 100)
-const numchang= ref(false)
+const numchang = ref(false)
 const sourceFiatCurrency = ref({})
 
 //新代码
@@ -367,7 +367,7 @@ function Conversion(startNum, rate = unref(1)) {
 //选择法币
 const changeMoney = item => {
     moneyShow.value = false
-    if (activeCoin.value.rate != item.rate&&numchang.value==false) {
+    if (activeCoin.value.rate != item.rate && numchang.value == false) {
         num.value = Conversion(100, item.rate)
     }
     activeCoin.value = item
@@ -397,11 +397,11 @@ onMounted(() => {
 
 // 键盘事件
 const onKsysChange = (key) => {
-    numchang.value=true
+    numchang.value = true
     const val = num.value
     if (!val) {
-            return
-        }
+        return
+    }
     if (key !== 'del') {
         // 输入
         // 如果输入的是小数点
@@ -537,8 +537,6 @@ const next = async () => {
         return
     }
     loading.value = true
-
-    setTimeout(() => (loading.value = false), 5000)
     try {
         const channelInfo = selectChannel.value
 
@@ -564,11 +562,13 @@ const next = async () => {
 
         if (code == 200) {
             window.location.href = data.url
-            window.open(data.url)
+            // window.open(data.url)
+            setTimeout(() => (loading.value = false), 6000)
             // window.location.href = data.url
             console.log(data)
         }
     } catch (error) {
+        setTimeout(() => (loading.value = false), 6000)
         console.log(error)
     }
 }
