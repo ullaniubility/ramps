@@ -213,7 +213,6 @@ function getPriceData(price) {
       const data = res.data
       if (supportBuyCoin.value.length != 0) {
         num.value = numberOfDigit(data.buyEachTimeMin / price, 4)
-        showToast('进来了')
       }
       console.log(res, "000000")
     }
@@ -583,7 +582,7 @@ const next = async () => {
     if (code == 200) {
       // window.open(data.url)
       window.open(data.url)
-      // window.location.href = data.url
+      window.location.href = data.url
       // window.location.href = data.url
     }
   } catch (error) {
