@@ -565,7 +565,7 @@ const next = async () => {
         if (code == 200) {
             // window.location.href = data.url
             window.open(data.url)
-            window.location.href = data.url
+            // window.location.href = data.url
             console.log(data)
         }
     } catch (error) {
