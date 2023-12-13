@@ -285,9 +285,7 @@ const getSupportBuyCoin = (val) => {
             const data = res.data
             console.log(data)
             data.forEach((item) => {
-                if (Number(item.balance) != 0) {
-                    supportBuyCoin.value.push(item)
-                }
+                supportBuyCoin.value.push(item)
             })
             if (supportBuyCoin.value.length == 0) {
                 availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
@@ -573,9 +571,9 @@ const next = async () => {
         }
     } catch (error) {
         setTimeout(() => {
-                loading.value = false
-                disabled.value = false
-            }, 6000)
+            loading.value = false
+            disabled.value = false
+        }, 6000)
         console.log(error)
     }
 }

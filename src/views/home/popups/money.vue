@@ -54,7 +54,7 @@ const emit = defineEmits(['back', 'confirm'])
 
 const list = computed(() => {
   const k = (keyword.value || '').toUpperCase()
-  return props.tokenList.filter(item => (item.symbol || '').toUpperCase().indexOf(k) > -1)
+  return props.tokenList.filter(item => (item.symbol.toUpperCase() || '').toUpperCase().indexOf(k) > -1)
 })
 
 
