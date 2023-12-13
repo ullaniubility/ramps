@@ -139,7 +139,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { formatDecimal, tokensList } from '@/utils/index'
-import { getAssetList, getCurrency } from '@/api/business'
+import { getAssetList, getCurrency, getPrice } from '@/api/business'
 import Money from '@/views/home/popups/money.vue'
 import Assets from '@/views/home/popups/assets.vue'
 import Supplier from '@/views/home/popups/supplier.vue'
@@ -166,7 +166,8 @@ const selectChannel = ref(null)
 const supplierShow = ref(false)
 const moneyShow = ref(false)
 const assetsShow = ref(false)
-const num = ref(route.query.defaultAmount || 100)
+const num = ref(30)
+const numchang = ref(false)
 const sourceFiatCurrency = ref({})
 
 //新代码
@@ -204,6 +205,20 @@ function getQuery() {
 
 
 }
+
+//获取出售最小数值和最大数值
+function getPriceData(price) {
+  getPrice().then((res) => {
+    if (res.code = 200) {
+      const data = res.data
+      if (supportBuyCoin.value.length != 0) {
+        num.value = numberOfDigit(data.buyEachTimeMin / price, 4)
+        showToast('进来了')
+      }
+      console.log(res, "000000")
+    }
+  })
+}
 //获取法币列表
 const getCurrencyList = () => {
   getCurrency().then(res => {
@@ -214,7 +229,7 @@ const getCurrencyList = () => {
       //         activeCoin.value=item
       //     }
       // })
-      if (currency.value != 0) {
+      if (currency.value.length != 0) {
         activeCoin.value = currency.value[0]
         params.value = {
           address: availableCoin.value.walletAddress,//地址
@@ -226,6 +241,14 @@ const getCurrencyList = () => {
         }
       } else {
         activeCoin.value = { symbol: 'USD', logo: USD }
+        params.value = {
+          address: availableCoin.value.walletAddress,//地址
+          fiat2Token: false,//买true 卖false
+          net: availableCoin.value.net,
+          sourceFiatCurrency: activeCoin.value.symbol,//法币选择
+          sourceValue: num.value,
+          symbol: availableCoin.value.symbol
+        }
         showToast(t('startpay.money.empty'))
       }
       currencyLoad.value = false
@@ -258,9 +281,18 @@ const getSupportBuyCoin = (val) => {
       })
       if (supportBuyCoin.value.length == 0) {
         availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
+        params.value = {
+          address: availableCoin.value.walletAddress,//地址
+          fiat2Token: false,//买true 卖false
+          net: availableCoin.value.net,
+          sourceFiatCurrency: activeCoin.value.symbol,//法币选择
+          sourceValue: num.value,
+          symbol: availableCoin.value.symbol
+        }
         showToast(t('null'))
       } else {
         availableCoin.value = supportBuyCoin.value[0]
+        getPriceData(supportBuyCoin.value[0].price)
         console.log('默认资产', availableCoin.value)
         params.value = {
           address: availableCoin.value.walletAddress,//地址
@@ -314,6 +346,41 @@ const changeAssets = item => {
     loading.value = false
   }
 }
+//换算
+function Conversion(startNum, rate = unref(1)) {
+  if (startNum == 30) {
+    const tamp = startNum
+    return tamp * (rate || 1)
+  }
+  return num.value
+}
+
+function numberOfDigit(strnum = '', digit = 2) {
+  const num = +strnum
+  if (!num) {
+    return '0'
+  }
+
+  let str = transferToNumber(num)
+  let index = str.indexOf('.')
+  if (index === -1) {
+    return str
+  }
+  let decimal = str.slice(index + 1, index + digit + 1)
+  let result = str.slice(0, index + 1) + decimal
+  return result > 0 ? result : 0
+}
+function transferToNumber(inputNumber) {
+  if (isNaN(inputNumber)) {
+    return inputNumber
+  }
+  inputNumber = '' + inputNumber
+  inputNumber = parseFloat(inputNumber)
+  let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
+  let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
+  let number = inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
+  return number
+}
 
 //选择法币
 const changeMoney = item => {
@@ -345,10 +412,11 @@ onMounted(() => {
 
 // 键盘事件
 const onKsysChange = (key) => {
+  numchang.value = true
   const val = num.value
-  // if (!num.value) {
-  //   return
-  // }
+  if (!val) {
+    return
+  }
 
   if (key !== 'del') {
     // 输入
@@ -386,7 +454,7 @@ const onKsysChange = (key) => {
     num.value = val.toString().slice(0, -1)
     console.log(num.value)
     if (num.value === '') {
-      num.value = 0
+      num.value = '0'
     }
   }
   params.value = {
@@ -528,13 +596,13 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 </script>
 
 <style lang="scss">
-
 .box2 {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 @media (max-width: 575px) {
 
   body {

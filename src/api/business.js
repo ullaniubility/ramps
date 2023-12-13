@@ -20,3 +20,8 @@ export function getChannelList(params){
 export function setOrder(data){
     return axios.post(`/api/v1/order/create`,data);
 }
+
+//获取出售最大最小
+export function getPrice(){
+    return axios.get(`/api/v1/order/payConfig`);
+}

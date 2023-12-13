@@ -183,6 +183,7 @@ const supplierShow = ref(false)
 const moneyShow = ref(false)
 const assetsShow = ref(false)
 const num = ref(route.query.defaultAmount || 100)
+const numchang= ref(false)
 const sourceFiatCurrency = ref({})
 
 //新代码
@@ -251,6 +252,14 @@ const getCurrencyList = () => {
                 }
             } else {
                 activeCoin.value = { symbol: 'USD', logo: USD }
+                params.value = {
+                    address: availableCoin.value.walletAddress,//地址
+                    fiat2Token: true,//买true 卖false
+                    net: availableCoin.value.net,
+                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
+                    sourceValue: num.value,
+                    symbol: availableCoin.value.symbol
+                }
                 showToast(t('startpay.money.empty'))
             }
             currencyLoad.value = false
@@ -282,6 +291,14 @@ const getSupportBuyCoin = (val) => {
             })
             if (supportBuyCoin.value.length == 0) {
                 availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
+                params.value = {
+                    address: availableCoin.value.walletAddress,//地址
+                    fiat2Token: true,//买true 卖false
+                    net: availableCoin.value.net,
+                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
+                    sourceValue: num.value,
+                    symbol: availableCoin.value.symbol
+                }
                 showToast(t('null'))
             } else {
                 availableCoin.value = supportBuyCoin.value[0]
@@ -338,10 +355,21 @@ const changeAssets = item => {
         loading.value = false
     }
 }
+//换算
+function Conversion(startNum, rate = unref(1)) {
+    if (startNum == 100) {
+        const tamp = startNum
+        return tamp * (rate || 1)
+    }
+    return num.value
+}
 
 //选择法币
 const changeMoney = item => {
     moneyShow.value = false
+    if (activeCoin.value.rate != item.rate&&numchang.value==false) {
+        num.value = Conversion(100, item.rate)
+    }
     activeCoin.value = item
     params.value = {
         address: availableCoin.value.walletAddress,//地址
@@ -369,7 +397,11 @@ onMounted(() => {
 
 // 键盘事件
 const onKsysChange = (key) => {
+    numchang.value=true
     const val = num.value
+    if (!val) {
+            return
+        }
     if (key !== 'del') {
         // 输入
         // 如果输入的是小数点
@@ -407,7 +439,7 @@ const onKsysChange = (key) => {
         num.value = val.toString().slice(0, -1)
         console.log(num.value)
         if (num.value === '') {
-            num.value = 0
+            num.value = '0'
         }
     }
     params.value = {
