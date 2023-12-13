@@ -58,7 +58,7 @@ const { t } = useI18n()
 
   const list = computed(() => {
     const k = (keyword.value || '').toUpperCase()
-    return props.tokenList.filter(item => (item.symbol.toUpperCase() || '').toUpperCase().indexOf(k) > -1)
+    return props.tokenList.filter(item => (item.symbol || '').toUpperCase().indexOf(k) > -1)
   })
 </script>
 <style lang="scss" scoped>

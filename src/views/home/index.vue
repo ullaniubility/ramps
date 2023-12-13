@@ -113,7 +113,6 @@
                     <van-loading v-if="loading" color="#C7C7C7" />
                 </div>
 
-                <!-- 供应商 -->
 
                 <!-- 货币 -->
                 <van-popup position="bottom" class="MoneyBox" style="height:100vh;" v-model:show="moneyShow">
@@ -130,6 +129,7 @@
                     <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false"
                         :tokenList="allChannel" @confirm="changeSupplier" />
                 </van-popup>
+                  <!-- 供应商 -->
                 <!-- <van-button @click="btn">点击跳转</van-button> -->
                 <number-keyboard v-model:isDark="route.query.isDark" @onKsysChange="onKsysChange">
                     <template #footer>
@@ -287,7 +287,7 @@ const getSupportBuyCoin = (val) => {
 const changeAssets = item => {
     assetsShow.value = false
     availableCoin.value = item
-    assetTextShow.value = false
+    assetdisplayShow.value = false
     params.value = {
         address: availableCoin.value.walletAddress,//地址
         fiat2Token: true,//买true 卖false
@@ -435,6 +435,7 @@ const onGetInfo = async () => {
         if (code == 200) {
             selectChannel.value = data[0]
             allChannel.value = data
+            console.log( allChannel.value,'获取渠道')
             if (data.length != 0) {
                 disabled.value = false
             } else if (data.length == 0) {

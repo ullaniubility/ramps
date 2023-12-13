@@ -61,10 +61,8 @@
           <div class="title">{{ t('startpay.get') }}</div>
           <div class="assets">
             <div class="info">
-              <input readonly class="num" v-model="num" is="ui-input" inputmode="decimal"
-                                :placeholder="t('startpay.get')" />
-              <!-- <input class="num" readonly :value="selectChannel && selectChannel.amount"
-                :placeholder="t('startpay.get')" /> -->
+              <input class="num" readonly :value="selectChannel && selectChannel.amount"
+                :placeholder="t('startpay.get')" />
             </div>
 
             <div class="moneyInfo" >
