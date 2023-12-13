@@ -580,11 +580,17 @@ const next = async () => {
     if (code == 200) {
       // window.open(data.url)
       window.location.href = data.url
-      setTimeout(() => (loading.value = false), 6000)
+      setTimeout(() => {
+        loading.value = false
+        disabled.value = false
+      }, 6000)
       // window.location.href = data.url
     }
   } catch (error) {
-    setTimeout(() => (loading.value = false), 6000)
+    setTimeout(() => {
+      loading.value = false
+      disabled.value = false
+    }, 6000)
     console.log(error)
   }
 }

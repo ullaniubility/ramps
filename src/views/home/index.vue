@@ -134,8 +134,8 @@
                 <!-- <van-button @click="btn">点击跳转</van-button> -->
                 <number-keyboard v-model:isDark="route.query.isDark" @onKsysChange="onKsysChange">
                     <template #footer>
-                        <van-button :loading="loading" :disabled="disabled"
-                            :class="['next-button', disabled && 'disabled']" @click="next">
+                        <van-button :loading="loading" :disabled="disabled" :class="['next-button', disabled && 'disabled']"
+                            @click="next">
                             {{
                                 t('next')
                             }}
@@ -537,6 +537,7 @@ const next = async () => {
         return
     }
     loading.value = true
+    disabled.value = true
     try {
         const channelInfo = selectChannel.value
 
@@ -563,12 +564,18 @@ const next = async () => {
         if (code == 200) {
             window.location.href = data.url
             // window.open(data.url)
-            setTimeout(() => (loading.value = false), 6000)
+            setTimeout(() => {
+                loading.value = false
+                disabled.value = false
+            }, 6000)
             // window.location.href = data.url
             console.log(data)
         }
     } catch (error) {
-        setTimeout(() => (loading.value = false), 6000)
+        setTimeout(() => {
+                loading.value = false
+                disabled.value = false
+            }, 6000)
         console.log(error)
     }
 }
