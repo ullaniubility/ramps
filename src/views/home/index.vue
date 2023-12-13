@@ -27,22 +27,21 @@
                         </div>
 
                         <!-- 选择法币 -->
-                        <div class="moneyInfo" v-if="currencyLoad == false" @click="() => {
-                            if (urlData.address != undefined && urlData.net != undefined) {
-                                moneyShow = true
-                            }
-                        }">
-                            <img :src="activeCoin.logo" />
-                            <span>
-                                {{
-                                    activeCoin.symbol
-                                }}
-                            </span>
+                        <div class="moneyInfo" @click="moneyShow = true">
+
+                            <span v-if="assetTextShow">{{ t('startpay.money.title') }}</span>
+                            <div class="moneyInfo" v-else>
+                                <img :src="activeCoin.logo" />
+                                <span>
+                                    {{
+                                        activeCoin.symbol
+                                    }}
+                                </span>
+                            </div>
                             <van-icon class="icon-left"
                                 :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
                                 size="20"></van-icon>
                         </div>
-                        <van-loading v-if="currencyLoad == true" color="#C7C7C7" />
                         <!-- 选择法币 -->
                     </label>
                 </div>
@@ -54,28 +53,28 @@
                                 :placeholder="t('startpay.get')" />
                         </div>
                         <!-- 选择资产 -->
-                        <div class="symbol" v-if="supportBuyCoinLoad == false" @click="() => {
-                            if (urlData.address != undefined && urlData.net != undefined) {
-                                assetsShow = true
-                            }
-                        }">
-                            <div class="icon-box">
-                                <img class="icon" :src="availableCoin.projectLogo" />
-                                <div v-for="(item2, index) in tokensList">
-                                    <img v-if="availableCoin.coinType == 2 && item2.chainCode == availableCoin.net"
-                                        :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'icon-min-left' : 'icon-min'"
-                                        :src="item2.iconUrl" />
+                        <div class="symbol" @click="assetsShow = true">
+                            <span v-if="assetdisplayShow">{{ t('startpay.assets.title') }}</span>
+                            <div class="symbol" v-else>
+                                <div class="icon-box">
+                                    <img class="icon" :src="availableCoin.projectLogo" />
+                                    <div v-for="(item2, index) in tokensList">
+                                        <img v-if="availableCoin.coinType == 2 && item2.chainCode == availableCoin.net"
+                                            :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'icon-min-left' : 'icon-min'"
+                                            :src="item2.iconUrl" />
+                                    </div>
+                                </div>
+
+                                <div class="symbol-text">
+                                    <span>{{ availableCoin.symbol }}</span>
+                                    <span v-if="availableCoin.coinType == 2" class="sub">{{ availableCoin.net }}</span>
                                 </div>
                             </div>
-                            <div class="symbol-text">
-                                <span>{{ availableCoin.symbol }}</span>
-                                <span v-if="availableCoin.coinType == 2" class="sub">{{ availableCoin.net }}</span>
-                            </div>
+
                             <van-icon class="icon-right"
                                 :name="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'arrow-left' : 'arrow'"
                                 size="20"></van-icon>
                         </div>
-                        <van-loading v-if="supportBuyCoinLoad == true" color="#C7C7C7" />
                     </div>
                     <!-- 选择资产 -->
                 </div>
@@ -182,7 +181,7 @@ const selectChannel = ref(null)
 const supplierShow = ref(false)
 const moneyShow = ref(false)
 const assetsShow = ref(false)
-const num = ref(route.query.defaultAmount || 100)
+const num = ref('0')
 const numchang = ref(false)
 const sourceFiatCurrency = ref({})
 
@@ -196,6 +195,8 @@ const availableCoin = ref({})//资产
 const activeCoin = ref({})//法币
 const params = ref({})//渠道参数
 const allChannel = ref([])//渠道列表
+const assetTextShow = ref(true)//选择代币显示
+const assetdisplayShow = ref(true)//选择资产显示
 
 // function btn() {
 //     // jumpLink.value = data.url
@@ -206,7 +207,7 @@ const allChannel = ref([])//渠道列表
 function getQuery() {
     if (urlData.value.address && urlData.value.net) {
         console.log('有地址')
-        urlData.value.inputValue = route.query.defaultAmount || '100'
+        urlData.value.inputValue = '0'
         const address = urlData.value.address.split(',')
         const net = urlData.value.net.split(',')
         // const tokens = urlData.value.default.split(',') //获取默认代币
@@ -224,8 +225,8 @@ function getQuery() {
         disabled.value = true
         supportBuyCoinLoad.value = false
         supportBuyCoin.value = []
-        activeCoin.value = { symbol: 'USD', logo: USD }
-        availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
+        // activeCoin.value = { symbol: 'USD', logo: USD }
+        // availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
     }
 
 
@@ -235,38 +236,13 @@ const getCurrencyList = () => {
     getCurrency().then(res => {
         if (res.code == 200) {
             currency.value = res.data
-            // currency.value.forEach((item)=>{
-            //     if(item.symbol==activeCoin.value.symbol){
-            //         activeCoin.value=item
-            //     }
-            // })
-            if (currency.value != 0) {
-                activeCoin.value = currency.value[0]
-                params.value = {
-                    address: availableCoin.value.walletAddress,//地址
-                    fiat2Token: true,//买true 卖false
-                    net: availableCoin.value.net,
-                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
-                    sourceValue: num.value,
-                    symbol: availableCoin.value.symbol
-                }
-            } else {
-                activeCoin.value = { symbol: 'USD', logo: USD }
-                params.value = {
-                    address: availableCoin.value.walletAddress,//地址
-                    fiat2Token: true,//买true 卖false
-                    net: availableCoin.value.net,
-                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
-                    sourceValue: num.value,
-                    symbol: availableCoin.value.symbol
-                }
+            if (currency.value.length == 0) {
                 showToast(t('startpay.money.empty'))
             }
             currencyLoad.value = false
         } else {
             disabled.value = true
             currency.value = []
-            activeCoin.value = { symbol: 'USD', logo: USD, }
             currencyLoad.value = false
         }
 
@@ -274,7 +250,6 @@ const getCurrencyList = () => {
         disabled.value = true
         currencyLoad.value = false
         currency.value = []
-        activeCoin.value = { symbol: 'USD', logo: USD, }
     })
 }
 
@@ -288,30 +263,7 @@ const getSupportBuyCoin = (val) => {
                 supportBuyCoin.value.push(item)
             })
             if (supportBuyCoin.value.length == 0) {
-                availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
-                params.value = {
-                    address: availableCoin.value.walletAddress,//地址
-                    fiat2Token: true,//买true 卖false
-                    net: availableCoin.value.net,
-                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
-                    sourceValue: num.value,
-                    symbol: availableCoin.value.symbol
-                }
                 showToast(t('null'))
-            } else {
-                availableCoin.value = supportBuyCoin.value[0]
-                console.log('默认资产', availableCoin.value)
-                params.value = {
-                    address: availableCoin.value.walletAddress,//地址
-                    fiat2Token: true,//买true 卖false
-                    net: availableCoin.value.net,
-                    sourceFiatCurrency: activeCoin.value.symbol,//法币选择
-                    sourceValue: num.value,
-                    symbol: availableCoin.value.symbol
-                }
-                if (num.value && currency.value.length != 0) {
-                    numChange() //获取渠道列表
-                }
             }
             console.log(supportBuyCoin.value.length, '000000000')
             console.log(params.value)
@@ -322,12 +274,10 @@ const getSupportBuyCoin = (val) => {
             supportBuyCoin.value = []
             loading.value = false
             supportBuyCoinLoad.value = false
-            availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
         }
 
     }).catch(() => {
         disabled.value = true
-        availableCoin.value = { symbol: 'USDT', net: 'ERC20', projectLogo: USDT, coinType: 2 }
         supportBuyCoin.value = []
         loading.value = false
         supportBuyCoinLoad.value = false
@@ -337,6 +287,7 @@ const getSupportBuyCoin = (val) => {
 const changeAssets = item => {
     assetsShow.value = false
     availableCoin.value = item
+    assetTextShow.value = false
     params.value = {
         address: availableCoin.value.walletAddress,//地址
         fiat2Token: true,//买true 卖false
@@ -345,13 +296,9 @@ const changeAssets = item => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
     }
-    loading.value = true
-    if (num.value && currency.value.length != 0 && supportBuyCoin.value.length != 0) {
+    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
         numChange() //获取渠道列表
-    } else {
-        showToast(t('null'))
-        loading.value = false
-    }
+    } 
 }
 //换算
 function Conversion(startNum, rate = unref(1)) {
@@ -365,10 +312,11 @@ function Conversion(startNum, rate = unref(1)) {
 //选择法币
 const changeMoney = item => {
     moneyShow.value = false
-    if (activeCoin.value.rate != item.rate && numchang.value == false) {
-        num.value = Conversion(100, item.rate)
-    }
+    // if (activeCoin.value.rate != item.rate && numchang.value == false) {
+    //     num.value = Conversion(100, item.rate)
+    // }
     activeCoin.value = item
+    assetTextShow.value = false
     params.value = {
         address: availableCoin.value.walletAddress,//地址
         fiat2Token: true,//买true 卖false
@@ -377,13 +325,9 @@ const changeMoney = item => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
     }
-    loading.value = true
-    if (num.value && supportBuyCoin.value.length != 0 && currency.value.length != 0) {
+    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
         numChange() //获取渠道列表
-    } else {
-        showToast(t('null'))
-        loading.value = false
-    }
+    } 
 }
 onMounted(() => {
     urlData.value = route.query
@@ -419,12 +363,8 @@ const onKsysChange = (key) => {
                     // 输入别的数字
                     num.value = val.slice(1, val.length)
                     num.value = num.value + key
-                    loading.value = true
-                    if (num.value && supportBuyCoin.value.length != 0 && currency.value.length != 0) {
+                    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
                         numChange() //获取渠道列表
-                    } else {
-                        showToast(t('null'))
-                        loading.value = false
                     }
 
                     return
@@ -448,13 +388,9 @@ const onKsysChange = (key) => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
     }
-    loading.value = true
-    if (num.value && supportBuyCoin.value.length != 0 && currency.value.length != 0) {
+    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) { 
         numChange() //获取渠道列表
-    } else {
-        showToast(t('null'))
-        loading.value = false
-    }
+    } 
 }
 
 onMounted(() => {
