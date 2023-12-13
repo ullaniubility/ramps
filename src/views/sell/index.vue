@@ -20,7 +20,6 @@
               }}</span>
               <van-loading v-else color="#C7C7C7" size="14" />
             </div>
-
           </div>
           <label class="assets">
             <div class="info" style="flex: 1; display: flex; height: 100%">
@@ -29,7 +28,7 @@
             </div>
             <!-- 选择资产 -->
             <div class="symbol" @click="assetsShow = true">
-              <span v-if="assetdisplayShow">{{ t('startpay.assets.title') }}</span>
+              <span v-if="assetdisplayShow" class="one-line">{{ t('startpay.assets.title') }}</span>
               <div class="symbol" v-else>
                 <div class="icon-box">
                   <img class="icon" :src="availableCoin.projectLogo" />
@@ -66,7 +65,7 @@
             </div>
 
             <div class="moneyInfo" >
-              <span v-if="assetTextShow">{{ t('startpay.money.title') }}</span>
+              <span v-if="assetTextShow" class="one-line">{{ t('startpay.money.title') }}</span>
               <div class="moneyInfo" v-else>
                 <img :src="activeCoin.logo" />
                 <span>
@@ -827,7 +826,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
       width: 30px;
       height: 30px;
       border-radius: 100%;
-      margin-right: 16px;
+      
       box-sizing: border-box;
       position: relative;
 
@@ -888,8 +887,6 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   margin-top: 20px;
   align-items: center;
   padding: 14px;
-  padding-left: 32px;
-  padding-right: 16px;
   border: 1px solid var(--btn-border);
   border-radius: 10px;
   box-sizing: border-box;
@@ -1001,4 +998,13 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
   position: static;
   margin-top: 20px;
 }
+.one-line {
+  display: inline-block;
+  width: 100px;
+  // width: 100%;
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  text-align: end;
+} 
 </style>

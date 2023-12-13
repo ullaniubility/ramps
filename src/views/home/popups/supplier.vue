@@ -16,7 +16,12 @@
           <div class="title">{{ item.channelName }}</div>
         </template>
         <template #icon>
-          <img class="icon" :src="item.channelIcon"/>
+          <img v-if="item.channelIcon" class="icon" :src="item.channelIcon" />
+            <div v-else class="error-icon">
+              <img :src="props.isDark === 'dark'? emptyDark:empty" alt="">
+            </div>
+          <!-- <img class="icon" :src="item.channelIcon==''&&props.isDark === 'dark'?emptyDark:item.channelIcon==''&&props.isDark === 'light'?empty:item.channelIcon " /> -->
+          <!-- <van-image width="38" height="38" round :error-icon="props.isDark === 'dark'?emptyDark:empty" :src="item.channelIcon"/> -->
           <!-- <img class="icon" src="https://ossimg.ullapay.com/5,5/f40fe4b1c4314e0bbbb4c358b46bf8a7.png"/> -->
         </template>
         <template #value>
@@ -38,6 +43,8 @@
   import EmptyIcon from '../icons/empty.svg'
 import { useI18n } from 'vue-i18n'
 import useSettingStore from '@/stores/modules/setting'
+import empty from '@/assets/img/empty.png'
+import emptyDark from '@/assets/img/empty-dark.png'
 
 const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
@@ -78,8 +85,10 @@ const { t } = useI18n()
     --sear-border: #33334D;
     --sear-color: #fff;
     --sear-boder:#33334d;
+    --error-icon: #2B2A39;
     --sear-border-hover: #33C640;
   }
+  --error-icon:#EAEAEA;
   --sear-boder:#eaecee;
   --sear-bg:#F6F6F8;
   --sear-border:#EAECEE;
@@ -211,4 +220,19 @@ const { t } = useI18n()
     // margin-right: 16px;
   }
 }
+.error-icon {
+      display: inline-block;
+      width: 38px;
+      height: 38px;
+      border-radius: 100%;
+      overflow: hidden;
+      border: 1px solid var(--error-icon);
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      img{
+        width: 35%;
+        height: 35%;
+      }
+    }
 </style>

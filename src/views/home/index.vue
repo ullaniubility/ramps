@@ -29,7 +29,7 @@
                         <!-- 选择法币 -->
                         <div class="moneyInfo" @click="moneyShow = true">
 
-                            <span v-if="assetTextShow">{{ t('startpay.money.title') }}</span>
+                            <span v-if="assetTextShow" class="one-line">{{ t('startpay.money.title') }}</span>
                             <div class="moneyInfo" v-else>
                                 <img :src="activeCoin.logo" />
                                 <span>
@@ -54,7 +54,7 @@
                         </div>
                         <!-- 选择资产 -->
                         <div class="symbol" @click="assetsShow = true">
-                            <span v-if="assetdisplayShow">{{ t('startpay.assets.title') }}</span>
+                            <span v-if="assetdisplayShow" class="one-line">{{ t('startpay.assets.title') }}</span>
                             <div class="symbol" v-else>
                                 <div class="icon-box">
                                     <img class="icon" :src="availableCoin.projectLogo" />
@@ -129,7 +129,7 @@
                     <Supplier class="popup" v-model:isDark="route.query.isDark" @back="supplierShow = false"
                         :tokenList="allChannel" @confirm="changeSupplier" />
                 </van-popup>
-                  <!-- 供应商 -->
+                <!-- 供应商 -->
                 <!-- <van-button @click="btn">点击跳转</van-button> -->
                 <number-keyboard v-model:isDark="route.query.isDark" @onKsysChange="onKsysChange">
                     <template #footer>
@@ -298,7 +298,7 @@ const changeAssets = item => {
     }
     if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
         numChange() //获取渠道列表
-    } 
+    }
 }
 //换算
 function Conversion(startNum, rate = unref(1)) {
@@ -327,7 +327,7 @@ const changeMoney = item => {
     }
     if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
         numChange() //获取渠道列表
-    } 
+    }
 }
 onMounted(() => {
     urlData.value = route.query
@@ -388,9 +388,9 @@ const onKsysChange = (key) => {
         sourceValue: num.value,
         symbol: availableCoin.value.symbol
     }
-    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) { 
+    if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
         numChange() //获取渠道列表
-    } 
+    }
 }
 
 onMounted(() => {
@@ -435,7 +435,7 @@ const onGetInfo = async () => {
         if (code == 200) {
             selectChannel.value = data[0]
             allChannel.value = data
-            console.log( allChannel.value,'获取渠道')
+            console.log(allChannel.value, '获取渠道')
             if (data.length != 0) {
                 disabled.value = false
             } else if (data.length == 0) {
@@ -884,8 +884,6 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     width: 100%;
     align-items: center;
     padding: 14px;
-    padding-left: 32px;
-    padding-right: 16px;
     border: 1px solid var(--btn-border);
     border-radius: 10px;
     box-sizing: border-box;
@@ -912,7 +910,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     }
 
     .name {
-        margin: 0 12px;
+        margin: 0 20px;
         flex: 1;
         font-size: 18px;
         font-weight: 500;
@@ -988,7 +986,7 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
     }
 
     img {
-        margin: 0 16px;
+        // margin: 0 16px;
         height: 30px;
         display: block;
     }
@@ -1003,6 +1001,16 @@ const onBack = (url = 'https://h5.iearnbot.com/pages/home/top-up/buy-coins') => 
 .number-keyboard {
     position: static;
     margin-top: 20px;
+}
+
+.one-line {
+    display: inline-block;
+    width: 100px;
+    //   width: 100%;
+    //   overflow: hidden;
+    //   white-space: nowrap;
+    //   text-overflow: ellipsis;
+    text-align: end;
 }
 </style>
   

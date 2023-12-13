@@ -15,12 +15,17 @@
           <div class="title">{{ item.symbol }}</div>
           <div class="info" v-if="item.coinType == 2">{{ item.net }}</div>
         </template>
-
         <template #icon>
           <div class="icon-box">
-            <img class="icon" :src="item.projectLogo" />
+            <img v-if="item.projectLogo" class="icon" :src="item.projectLogo" />
+            <div v-else class="error-icon">
+              <img :src="props.isDark === 'dark'? emptyDark:empty" alt="">
+            </div>
+            <!-- <img class="icon" :src="item.projectLogo==''&&props.isDark === 'dark'?emptyDark:item.projectLogo==''&&props.isDark === 'light'?empty:item.projectLogo " /> -->
+            <!-- <van-image width="38" height="38" round :error-icon="props.isDark === 'dark'?emptyDark:empty" :src="item.projectLogo"/> -->
             <div v-for="(item2, index) in tokensList">
-              <img v-if="item.coinType == 2 && item2.chainCode == item.net" :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur'?'icon-min-left': 'icon-min'"
+              <img v-if="item.coinType == 2 && item2.chainCode == item.net"
+                :class="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' ? 'icon-min-left' : 'icon-min'"
                 :src="item2.iconUrl" />
             </div>
 
@@ -28,7 +33,7 @@
           </div>
         </template>
         <template #value>
-          <div class="title">{{toolNumber(formatDecimal(item.balance, 8))}}</div>
+          <div class="title">{{ toolNumber(formatDecimal(item.balance, 8)) }}</div>
           <div v-if="item.balanceAmount != '0'" class="info">${{ formatDecimal(item.balanceAmount, 2) }}</div>
         </template>
       </van-cell>
@@ -42,6 +47,8 @@ import EmptyIcon from '../icons/empty.svg'
 import { useI18n } from 'vue-i18n'
 import { formatDecimal, tokensList } from '@/utils/index'
 import useSettingStore from '@/stores/modules/setting'
+import empty from '@/assets/img/empty.png'
+import emptyDark from '@/assets/img/empty-dark.png'
 
 const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
@@ -146,8 +153,11 @@ const list = computed(() => {
     --sear-color: #fff;
     --sear-boder: #33334d;
     --sear-border-hover: #33C640;
+    --error-icon: #2B2A39;
+
   }
 
+  --error-icon:#EAEAEA;
   --sear-boder:#eaecee;
   --sear-bg:#F6F6F8;
   --sear-border:#EAECEE;
@@ -301,7 +311,19 @@ const list = computed(() => {
       height: 38px;
     }
   }
-
-
-}
-</style>
+  .error-icon {
+      display: inline-block;
+      width: 38px;
+      height: 38px;
+      border-radius: 100%;
+      overflow: hidden;
+      border: 1px solid var(--error-icon);
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      img{
+        width: 35%;
+        height: 35%;
+      }
+    }
+}</style>

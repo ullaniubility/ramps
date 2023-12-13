@@ -1,9 +1,9 @@
 <template>
   <div class="container" :class="props.isDark == 'dark' ? 'dark' : ''">
     <div class="header">
-      <van-nav-bar v-if="localeId == 'ar' || localeId == 'fa' || localeId == 'ur' " :title="t('startpay.money.title')">
+      <van-nav-bar v-if="localeId == 'ar' || localeId == 'fa' || localeId == 'ur'" :title="t('startpay.money.title')">
         <template #right>
-          <van-icon name="arrow" size="25" @click="emit('back')"/>
+          <van-icon name="arrow" size="25" @click="emit('back')" />
         </template>
       </van-nav-bar>
 
@@ -19,7 +19,11 @@
         </template>
         <template #icon>
           <div class="icon-box">
-            <img class="icon" :src="item.logo" />
+            <!-- <img class="icon" :src="item.logo" /> -->
+            <img v-if="item.logo" class="icon" :src="item.logo" />
+            <div v-else class="error-icon">
+              <img :src="props.isDark === 'dark' ? emptyDark : empty" alt="">
+            </div>
           </div>
         </template>
       </van-cell>
@@ -32,6 +36,8 @@ import { ref, defineEmits, defineProps, computed } from 'vue'
 import EmptyIcon from '../icons/empty.svg'
 import { useI18n } from 'vue-i18n'
 import useSettingStore from '@/stores/modules/setting'
+import empty from '@/assets/img/empty.png'
+import emptyDark from '@/assets/img/empty-dark.png'
 
 const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
@@ -78,8 +84,10 @@ const list = computed(() => {
     --sear-color: #fff;
     --sear-boder: #33334d;
     --sear-border-hover: #33C640;
+    --error-icon: #2B2A39;
   }
 
+  --error-icon:#EAEAEA;
   --sear-boder:#eaecee;
   --sear-bg:#F6F6F8;
   --sear-border:#EAECEE;
@@ -96,6 +104,7 @@ const list = computed(() => {
   color: var(--sear-color);
   text-align: justify;
 }
+
 :deep(.van-hairline--bottom:after) {
   border: none;
 }
@@ -214,4 +223,21 @@ const list = computed(() => {
     }
   }
 
+}
+
+.error-icon {
+  display: inline-block;
+  height: 30px;
+  width: 45px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--error-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    // width: 35%;
+    height: 35%;
+  }
 }</style>
