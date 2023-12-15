@@ -143,6 +143,7 @@ import Assets from '@/views/home/popups/assets.vue'
 import Supplier from '@/views/home/popups/supplier.vue'
 import { computed } from 'vue'
 import { showToast } from 'vant';
+import {transferToNumber} from '@/utils/index.js'
 import useSettingStore from '@/stores/modules/setting'
 import USD from '@/assets/img/USD.png'
 import USDT from '@/assets/img/USDT.png'
@@ -316,18 +317,6 @@ function numberOfDigit(strnum = '', digit = 2) {
   let result = str.slice(0, index + 1) + decimal
   return result > 0 ? result : 0
 }
-function transferToNumber(inputNumber) {
-  if (isNaN(inputNumber)) {
-    return inputNumber
-  }
-  inputNumber = '' + inputNumber
-  inputNumber = parseFloat(inputNumber)
-  let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
-  let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
-  let number = inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
-  return number
-}
-
 //选择法币
 const changeMoney = item => {
   moneyShow.value = false
@@ -435,6 +424,7 @@ onUnmounted(() => {
 
 const changeSupplier = (val) => {
   selectChannel.value = val
+  selectChannel.value.amount=transferToNumber(selectChannel.value.amount)
   supplierShow.value = false
 }
 
@@ -455,6 +445,7 @@ const onGetInfo = async () => {
     })
     if (code == 200) {
       selectChannel.value = data[0]
+      selectChannel.value.amount=transferToNumber(selectChannel.value.amount)
       allChannel.value = data
       if (data.length != 0) {
         disabled.value = false

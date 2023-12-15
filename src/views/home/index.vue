@@ -156,6 +156,7 @@ import Money from '@/views/home/popups/money.vue'
 import Assets from '@/views/home/popups/assets.vue'
 import Supplier from '@/views/home/popups/supplier.vue'
 import { showToast } from 'vant';
+import {transferToNumber} from '@/utils/index.js'
 import { computed } from 'vue'
 import useSettingStore from '@/stores/modules/setting'
 import USD from '@/assets/img/USD.png'
@@ -414,6 +415,7 @@ onUnmounted(() => {
 
 const changeSupplier = (val) => {
     selectChannel.value = val
+    selectChannel.value.amount=transferToNumber( selectChannel.value.amount )
     supplierShow.value = false
 }
 
@@ -434,6 +436,7 @@ const onGetInfo = async () => {
         })
         if (code == 200) {
             selectChannel.value = data[0]
+            selectChannel.value.amount=transferToNumber( selectChannel.value.amount )
             allChannel.value = data
             console.log(allChannel.value, '获取渠道')
             if (data.length != 0) {
