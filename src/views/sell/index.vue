@@ -59,7 +59,7 @@
         }">
           <div class="title">{{ t('startpay.get') }}</div>
           <div class="assets">
-            <div class="info">
+            <div class="info" style="flex: 1; display: flex; height: 100%">
               <input class="num" readonly :value="selectChannel && selectChannel.amount"
                 :placeholder="t('startpay.get')" />
             </div>

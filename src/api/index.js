@@ -49,7 +49,7 @@ axios.interceptors.response.use(
       if(data?.code==400&&config.url=="/api/v1/payChannel/allChannelEstimateFee"){
         showToast( data.msg )
       }else{
-        showToast( t('msg.' + data.code) ||data.msg);
+        showToast(data.code ? t('msg.' + data.code) : data.msg);
       }
     }
     return Promise.resolve(data)

@@ -48,7 +48,7 @@
                 <div class="number">
                     <div class="title">{{ t('startpay.get') }}</div>
                     <div class="assets">
-                        <div class="info">
+                        <div class="info" style="flex: 1; display: flex; height: 100%">
                             <input class="num" readonly :value="selectChannel && selectChannel.amount"
                                 :placeholder="t('startpay.get')" />
                         </div>
@@ -79,16 +79,16 @@
                     <!-- 选择资产 -->
                 </div>
 
-                <div class="tips" v-if="supportBuyCoin.length != 0">
-                    {{ selectChannel?.buyEachTimeMin > num ? t('min', {
-                        min: formatDecimal(selectChannel?.buyEachTimeMin, 2)
+                <div class="tips" v-if="moneyToUsd(selectChannel?.buyEachTimeMin,activeCoin.rate) && supportBuyCoin.length != 0">
+                    {{ moneyToUsd(selectChannel?.buyEachTimeMin,activeCoin.rate) > num ? t('min', {
+                        min: moneyToUsd(selectChannel?.buyEachTimeMin,activeCoin.rate)
                     })
                         : ``
                     }}
                 </div>
-                <div class="tips" v-if="supportBuyCoin.length != 0">
-                    {{ selectChannel?.buyEachTimeMax < num ? t('max', {
-                        max: formatDecimal(selectChannel?.buyEachTimeMax, 2)
+                <div class="tips" v-if="moneyToUsd(selectChannel?.buyEachTimeMax,activeCoin.rate) && supportBuyCoin.length != 0">
+                    {{ moneyToUsd(selectChannel?.buyEachTimeMax,activeCoin.rate) < num ? t('max', {
+                        max: moneyToUsd(selectChannel?.buyEachTimeMax,activeCoin.rate)
                     }) : `` }} </div>
                 </div>
                 <!-- 供应商 -->
@@ -96,7 +96,7 @@
                     allChannel.length != 0 ? supplierShow = true : ''
                 }">
                     <div v-if="loading == false" style="width: 100%;">
-                        <div class="info" v-if="allChannel.length == 0">
+                        <div class="info" v-if="allChannel && allChannel.length == 0">
                             <img src="@/assets/img/null.png" alt="">
                             <span class="empty name">{{ t('startpay.supplier.empty') }}</span>
                         </div>
@@ -157,25 +157,16 @@ import Assets from '@/views/home/popups/assets.vue'
 import Supplier from '@/views/home/popups/supplier.vue'
 import { showToast } from 'vant';
 import {transferToNumber} from '@/utils/index.js'
-import { computed } from 'vue'
 import useSettingStore from '@/stores/modules/setting'
-import USD from '@/assets/img/USD.png'
-import USDT from '@/assets/img/USDT.png'
 
 const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
 const { t } = useI18n()
 const route = useRoute()
-const window2 = window
-const jumpLink = ref()
 
 const supportBuyCoinLoad = ref(true)
 const currencyLoad = ref(true)
-const keyshow = ref(false)
 const loading = ref(false)
-// const collapse = ref(['1'])
-const isIOS = ref(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
-
 const themeType = ref(route.query.dark == 1 ? 'dark' : 'light') //dark | light
 
 const selectChannel = ref(null)
@@ -184,8 +175,6 @@ const moneyShow = ref(false)
 const assetsShow = ref(false)
 const num = ref('0')
 const numchang = ref(false)
-const sourceFiatCurrency = ref({})
-
 //新代码
 /**获取URL参数 */
 const supportBuyCoin = ref([])//资产列表
@@ -259,24 +248,20 @@ const getSupportBuyCoin = (val) => {
     getAssetList(val).then(res => {
         if (res.code == 200) {
             const data = res.data
-            console.log(data)
             data.forEach((item) => {
                 supportBuyCoin.value.push(item)
             })
             if (supportBuyCoin.value.length == 0) {
                 showToast(t('null'))
             }
-            console.log(supportBuyCoin.value.length, '000000000')
-            console.log(params.value)
             supportBuyCoinLoad.value = false
 
         } else {
             disabled.value = true
             supportBuyCoin.value = []
-            loading.value = false
             supportBuyCoinLoad.value = false
         }
-
+        loading.value = false
     }).catch(() => {
         disabled.value = true
         supportBuyCoin.value = []
@@ -301,8 +286,14 @@ const changeAssets = item => {
         numChange() //获取渠道列表
     }
 }
+
+// 输入值转为美金价值
+function moneyToUsd(num, rate = 1) {
+    return num ? formatDecimal(Number(num * rate)):'';
+}
+
 //换算
-function Conversion(startNum, rate = unref(1)) {
+function Conversion(startNum, rate = 1) {
     if (startNum == 100) {
         const tamp = startNum
         return tamp * (rate || 1)
@@ -342,11 +333,13 @@ onMounted(() => {
 const onKsysChange = (key) => {
     numchang.value = true
     const val = num.value
+    console.log(num.value,"##########0-----------");
     if (!val) {
         return
     }
     if (key !== 'del') {
-        // 输入
+        // 输入 最大 12位
+        if(val.length > 11) return
         // 如果输入的是小数点
         if (key === '.') {
             // 如果已经存在小数点，就不让再次输入小数点
@@ -367,10 +360,16 @@ const onKsysChange = (key) => {
                     if (num.value != 0 && Object.keys(activeCoin.value).length != 0 && Object.keys(availableCoin.value).length != 0) {
                         numChange() //获取渠道列表
                     }
-
                     return
                 }
             }
+        }
+
+        // 先拦截不要超过限制 最大兑换数量
+        let max = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value?.rate) || 0
+        if(selectChannel.value && activeCoin.value && max <= val){
+            // num.value = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value.rate) || 0
+            return
         }
         num.value = val + key
     } else {
@@ -435,14 +434,17 @@ const onGetInfo = async () => {
             }),
         })
         if (code == 200) {
-            selectChannel.value = data[0]
-            selectChannel.value.amount=transferToNumber( selectChannel.value.amount )
-            allChannel.value = data
             console.log(allChannel.value, '获取渠道')
-            if (data.length != 0) {
-                disabled.value = false
-            } else if (data.length == 0) {
+            if (data && data.length != 0) {
+                selectChannel.value = data[0]
+                selectChannel.value.amount=transferToNumber( selectChannel.value.amount )
+                allChannel.value = data
+                
+                disabled.value = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value.rate) > num.value && moneyToUsd(selectChannel.value?.buyEachTimeMin,activeCoin.value.rate) < num.value && supportBuyCoin.value.length != 0 ? false:true
+            } else {
                 showToast(t('null'))
+                selectChannel.value = []
+                allChannel.value = []
                 disabled.value = true
             }
         } else {
