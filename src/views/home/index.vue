@@ -333,7 +333,6 @@ onMounted(() => {
 const onKsysChange = (key) => {
     numchang.value = true
     const val = num.value
-    console.log(num.value,"##########0-----------");
     if (!val) {
         return
     }
@@ -366,8 +365,9 @@ const onKsysChange = (key) => {
         }
 
         // 先拦截不要超过限制 最大兑换数量
-        let max = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value?.rate) || 0
+        let max = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value?.rate) || 10000
         if(selectChannel.value && activeCoin.value && max <= val){
+            disabled.value = true
             // num.value = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value.rate) || 0
             return
         }
@@ -439,7 +439,7 @@ const onGetInfo = async () => {
                 selectChannel.value = data[0]
                 selectChannel.value.amount=transferToNumber( selectChannel.value.amount )
                 allChannel.value = data
-                
+
                 disabled.value = moneyToUsd(selectChannel.value?.buyEachTimeMax,activeCoin.value.rate) > num.value && moneyToUsd(selectChannel.value?.buyEachTimeMin,activeCoin.value.rate) < num.value && supportBuyCoin.value.length != 0 ? false:true
             } else {
                 showToast(t('null'))
