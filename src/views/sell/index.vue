@@ -93,8 +93,8 @@
           </div>
           <div v-else class="box2">
             <div class="info">
-              <img :src="selectChannel.channelIcon" />
-              <span class="name">{{ selectChannel.channelName }}</span>
+              <img :src="selectChannel?.channelIcon" />
+              <span class="name">{{ selectChannel?.channelName }}</span>
             </div>
             <van-icon name="arrow" size="20" class="icon-right"></van-icon>
           </div>
@@ -444,13 +444,15 @@ const onGetInfo = async () => {
       }),
     })
     if (code == 200) {
-      selectChannel.value = data[0]
-      selectChannel.value.amount=transferToNumber(selectChannel.value.amount)
-      allChannel.value = data
       if (data.length != 0) {
+        selectChannel.value = data[0]
+        selectChannel.value.amount=transferToNumber(selectChannel.value.amount)
+        allChannel.value = data
         disabled.value = false
       } else if (data.length == 0) {
         showToast(t('null'))
+        selectChannel.value = []
+        allChannel.value = []
         disabled.value = true
       }
     } else {
