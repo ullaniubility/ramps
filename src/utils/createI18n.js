@@ -92,7 +92,7 @@ const resources = {
 
 export default createI18n({
     // resources,
-    locale: 'en',
+    locale: 'en-US',
     messages:resources
 })
 
