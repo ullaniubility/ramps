@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :class="props.isDark==='dark'?'dark':''">
+  <div class="container" :class="props.isDark === 'dark' ? 'dark' : ''">
     <div class="header">
       <van-nav-bar v-if="localeId == 'ar' || localeId == 'fa' || localeId == 'ur'" :title="t('startpay.supplier.title')">
         <template #right>
@@ -11,15 +11,15 @@
     </div>
     <div class="list">
       <div class="tips" v-if="list.length">{{ t('startpay.supplier.tips') }}</div>
-      <van-cell v-for="item, index in list" :key="item" @click="emit('confirm', item)" class="item"  >
+      <van-cell v-for="item, index in list" :key="item" @click="emit('confirm', item)" class="item">
         <template #title>
           <div class="title">{{ item.channelName }}</div>
         </template>
         <template #icon>
           <img v-if="item.channelIcon" class="icon" :src="item.channelIcon" />
-            <div v-else class="error-icon">
-              <img :src="props.isDark === 'dark'? emptyDark:empty" alt="">
-            </div>
+          <div v-else class="error-icon">
+            <img :src="props.isDark === 'dark' ? emptyDark : empty" alt="">
+          </div>
           <!-- <img class="icon" :src="item.channelIcon==''&&props.isDark === 'dark'?emptyDark:item.channelIcon==''&&props.isDark === 'light'?empty:item.channelIcon " /> -->
           <!-- <van-image width="38" height="38" round :error-icon="props.isDark === 'dark'?emptyDark:empty" :src="item.channelIcon"/> -->
           <!-- <img class="icon" src="https://ossimg.ullapay.com/5,5/f40fe4b1c4314e0bbbb4c358b46bf8a7.png"/> -->
@@ -29,18 +29,13 @@
           <div v-if="index === 0" class="base">{{ t('startpay.supplier.bast') }}</div>
         </template>
       </van-cell>
-      <van-empty
-        v-if="!list.length"
-        :image="EmptyIcon"
-        image-size="128"
-        :description="t('startpay.supplier.empty')"
-      />
+      <van-empty v-if="!list.length" :image="EmptyIcon" image-size="128" :description="t('startpay.supplier.empty')" />
     </div>
   </div>
 </template>
 <script setup>
-  import { ref, defineEmits, defineProps, computed } from 'vue'
-  import EmptyIcon from '../icons/empty.svg'
+import { ref, defineEmits, defineProps, computed } from 'vue'
+import EmptyIcon from '../icons/empty.svg'
 import { useI18n } from 'vue-i18n'
 import useSettingStore from '@/stores/modules/setting'
 import empty from '@/assets/img/empty.png'
@@ -50,33 +45,34 @@ const settingsStore = useSettingStore()
 const { localeId } = storeToRefs(settingsStore)
 
 const { t } = useI18n()
-  const props = defineProps({
-    tokenList: {
-      type: Array,
-      default: () => []
-    },
-    isDark:{
-      type:String,
-      default:'light'
-    }
-  })
-  const keyword = ref('')
-  const emit = defineEmits(['back', 'confirm'])
+const props = defineProps({
+  tokenList: {
+    type: Array,
+    default: () => []
+  },
+  isDark: {
+    type: String,
+    default: 'light'
+  }
+})
+const keyword = ref('')
+const emit = defineEmits(['back', 'confirm'])
 
-  const list = computed(() => {
-    const k = (keyword.value || '').toUpperCase()
-    return props.tokenList.filter(item => (item.symbol || '').toUpperCase().indexOf(k) > -1)
-  })
+const list = computed(() => {
+  const k = (keyword.value || '').toUpperCase()
+  return props.tokenList.filter(item => (item.symbol || '').toUpperCase().indexOf(k) > -1)
+})
 </script>
 <style lang="scss" scoped>
-.container{
+.container {
   display: flex;
   flex-direction: column;
   height: 100%;
   --item-bg: #F8F8F8;
   --title-color: #333333;
   --tips-bg: #efefef;
-  &.dark{
+
+  &.dark {
     --theme-bg: #13131B;
     --text-color: #fff;
     --min-text-color: #8B8B9E;
@@ -84,65 +80,77 @@ const { t } = useI18n()
     --sear-bg: #1E1E2A;
     --sear-border: #33334D;
     --sear-color: #fff;
-    --sear-boder:#33334d;
+    --sear-boder: #33334d;
     --error-icon: #2B2A39;
     --sear-border-hover: #33C640;
   }
+
   --error-icon:#EAEAEA;
   --sear-boder:#eaecee;
   --sear-bg:#F6F6F8;
   --sear-border:#EAECEE;
   --sear-color:#1F1F38;
   --sear-border-hover:#33C640;
-  
-  
+
+
 }
-:deep(.van-field__control){
+
+:deep(.van-field__control) {
   text-align: end;
 }
 
-:deep(.van-hairline--bottom:after){
+:deep(.van-hairline--bottom:after) {
   border: none;
 }
-:deep(.van-search__field){
+
+:deep(.van-search__field) {
   border: 1px solid var(--sear-boder);
-  padding: 0 ;
+  padding: 0;
   margin: 0;
-  padding-left:0;
+  padding-left: 0;
   color: var(--sear-color);
   background-color: var(--sear-bg);
   border-radius: 8px;
 }
-:deep(.van-search__field):hover{
+
+:deep(.van-search__field):hover {
   border: 1px solid var(--sear-border-hover);
 }
-:deep(.van-search__content){
+
+:deep(.van-search__content) {
   background-color: transparent;
 }
-:deep(.van-search__content){
+
+:deep(.van-search__content) {
   padding: 0;
 }
-:deep(.van-icon , .van-icon-clear , .van-field_clear){
+
+:deep(.van-icon, .van-icon-clear, .van-field_clear) {
   margin-right: 10px;
 }
-:deep(.van-search__field .van-field__left-icon){
+
+:deep(.van-search__field .van-field__left-icon) {
   margin-left: 10px;
 }
-:deep(.van-field__control){
+
+:deep(.van-field__control) {
   color: var(--sear-color);
 }
-:deep(.van-nav-bar__title){
+
+:deep(.van-nav-bar__title) {
   color: var(--text-color);
 }
 
-:deep(.van-nav-bar .van-icon){
+:deep(.van-nav-bar .van-icon) {
   color: var(--text-color);
-  
+
 }
-:deep(.van-nav-bar__title .van-ellipsis){
+
+:deep(.van-nav-bar__title .van-ellipsis) {
   color: var(--sear-color);
 }
-.header{
+
+.header {
   color: var(--sear-color);
   --van-search-background: var(--theme-bg);
   --van-nav-bar-background: var(--theme-bg);
@@ -158,19 +166,22 @@ const { t } = useI18n()
   --van-field-icon-size: 18px;
   background-color: var(--theme-bg);
 }
-.list{
+
+.list {
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
   background-color: var(--theme-bg);
   padding: 0 16px;
-  .tips{
+
+  .tips {
     font-size: 14px;
     color: #979797;
     padding: 16px;
     padding-bottom: 0;
   }
-  .item{
+
+  .item {
     background-color: var(--sear-bg);
     border-radius: 8px;
     padding: 0;
@@ -178,12 +189,14 @@ const { t } = useI18n()
     width: 100%;
     height: 64px;
     display: flex;
-    padding:  0 16px;
+    padding: 0 16px;
     align-items: center;
     box-sizing: border-box;
-    &::after{
+
+    &::after {
       display: none;
     }
+
     :deep(.van-cell__value) {
       text-align: end;
       display: flex;
@@ -191,15 +204,18 @@ const { t } = useI18n()
       justify-content: end;
       align-items: flex-end;
     }
-    .title{
+
+    .title {
       font-size: 16px;
       color: var(--sear-color);
       font-weight: 500;
       margin: 0 10px;
     }
-    .base{
+
+    .base {
       background-color: var(--sear-boder);
-      width: 80px;
+      // width: 80px;
+      padding: 2px 3px;
       height: 20px;
       line-height: 20px;
       border-radius: 4px;
@@ -207,32 +223,35 @@ const { t } = useI18n()
       color: var(--sear-border-hover);
       text-align: center;
     }
-    .info{
+
+    .info {
       font-size: 12px;
       color: var(--info-color);
       line-height: normal;
     }
   }
-  .icon{
+
+  .icon {
     width: 38px;
     height: 38px;
     border-radius: 100%;
     // margin-right: 16px;
   }
 }
+
 .error-icon {
-      display: inline-block;
-      width: 38px;
-      height: 38px;
-      border-radius: 100%;
-      overflow: hidden;
-      border: 1px solid var(--error-icon);
-      display: flex;
-      align-items:center;
-      justify-content: center;
-      img{
-        width: 35%;
-        height: 35%;
-      }
-    }
-</style>
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  overflow: hidden;
+  border: 1px solid var(--error-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 35%;
+    height: 35%;
+  }
+}</style>

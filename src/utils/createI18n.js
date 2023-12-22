@@ -26,60 +26,63 @@ import ur from '@/locales/ur.json';
 import uk from '@/locales/uk.json';
 import id from '@/locales/id.json';
 import it from '@/locales/it.json';
+import fil from '@/locales/fil.json';
 
 
 const resources = {
     //中文简体
-    "zh-CN":zh,
+    "zh-CN": zh,
     //英语
-    "en": en,
+    "en-US": en,
     //中文繁体
-    "zh-Hant": zhHant,
+    "zh-HK": zhHant,
     //日语
-    "ja":ja,
+    "ja-JP":ja,
     //韩语
-    "ko": ko,
+    "ko-KP": ko,
     //俄语
-    "ru": ru,
+    "ru":  ru,
     //法语
-    "fr": fr,
+    "fr-FR": fr,
     //德语
-    "de":de,
+    "de": de,
     //西班牙语
-    "es": es,
+    "es":  es,
     //葡萄牙语
-    "pt-PT": pt,
+    "pt": pt,
     //印地语
-    "hi": hi,
+    "hi-IN": hi,
     //越南语
-    "vi": vi,
+    "vi": vi, //暂定key
     //孟加拉语
-    "bn-BD":bn,
+    "bn":bn,
     //泰语
-    "th": th,
+    "th-TH": th,
     //阿拉伯
-    "ar":ar,
-    //波斯语 fa
-    "fa":fa,
+    "ar": ar,
+    //波斯语 fa 
+    "fa":fa,//暂定key
     //高棉 km
-    "km":km,
+    "km":km,//暂定key
     //捷克cs
-    "cs":cs,
+    "cs":cs, //暂定key
     //马来ms
     "ms":ms,
     //缅甸my
-    "my":my,
+    "my":my,//暂定key
     //土耳其 tr
-    "tr":tr,
+    "tr":tr, //暂定key
     //乌尔都语ur
-    "ur":ur,
+    "ur":ur, //暂定key
     //乌克兰uk
-    "uk":uk,
+    "uk-UA":uk,
     //印度尼西亚 id and in
-    "id":id,
-    "in":id,
+    "id": id,
+    "in": id,
     //意大利 it
-    "it":it
+    "it-IT":it,
+    //菲利宾
+    "fil":fil
   }
 
 export default createI18n({
