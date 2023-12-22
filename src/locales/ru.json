@@ -51,6 +51,6 @@
     "startpay.supplier.title": "Поставщики",
     "startpay.supplier.tips": "Выберите поставщика платежей для этой транзакции",
     "startpay.supplier.empty": "Поставщики не найдены",
-    "startpay.supplier.bast": "Оптимальный обменный курс"
+    "startpay.supplier.bast": "Самый доступный"
 }
 

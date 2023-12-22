@@ -222,6 +222,11 @@ const list = computed(() => {
       font-size: 12px;
       color: var(--sear-border-hover);
       text-align: center;
+      white-space:nowrap;
+      word-wrap:normal;
+      word-break:keep-all;
+      // overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .info {
@@ -254,4 +259,5 @@ const list = computed(() => {
     width: 35%;
     height: 35%;
   }
-}</style>
+}
+</style>

@@ -52,5 +52,5 @@
      "startpay.supplier.title": "Pembekal",
      "startpay.supplier.tips": "Pilih penyedia pembayaran untuk transaksi ini",
      "startpay.supplier.empty": "Tiada pembekal ditemui",
-     "startpay.supplier.bast": "Kadar pertukaran terbaik"
+     "startpay.supplier.bast": "Harga terbaik"
 }

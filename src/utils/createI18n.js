@@ -27,6 +27,8 @@ import uk from '@/locales/uk.json';
 import id from '@/locales/id.json';
 import it from '@/locales/it.json';
 import fil from '@/locales/fil.json';
+import mn from '@/locales/mn.json';
+
 
 
 const resources = {
@@ -39,17 +41,18 @@ const resources = {
     //日语
     "ja-JP":ja,
     //韩语
-    "ko-KP": ko,
+    "ko-KR": ko,
     //俄语
-    "ru":  ru,
+    "ru":  ru, //哈哈哈哈哈
     //法语
-    "fr-FR": fr,
+    "fr-FR": fr,//哈哈哈哈
     //德语
     "de": de,
     //西班牙语
     "es":  es,
     //葡萄牙语
     "pt": pt,
+    "pt-BR": pt,
     //印地语
     "hi-IN": hi,
     //越南语
@@ -82,7 +85,9 @@ const resources = {
     //意大利 it
     "it-IT":it,
     //菲利宾
-    "fil":fil
+    "fil":fil,
+     //蒙古
+     "mn-MN":mn
   }
 
 export default createI18n({

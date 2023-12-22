@@ -51,5 +51,5 @@
     "startpay.supplier.title": "Fournisseurs",
     "startpay.supplier.tips": "Choisissez un fournisseur de paiement pour cette transaction",
     "startpay.supplier.empty": "Aucun fournisseur trouvé",
-    "startpay.supplier.bast": "Les meilleurs taux de change"
+    "startpay.supplier.bast": "Le plus abordable"
 }
